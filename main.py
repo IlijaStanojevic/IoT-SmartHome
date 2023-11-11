@@ -4,7 +4,6 @@ from components.dus1 import run_uds
 from components.dpir1 import run_dpir1
 from components.rpir1 import run_rpir1
 from components.rpir2 import run_rpir2
-from components.dus1 import run_dus
 from settings import load_settings
 from components.rdht1 import run_dht
 import time
