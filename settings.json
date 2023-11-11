@@ -26,5 +26,9 @@
   "DB": {
     "simulated": true,
     "pin": 17
+  },
+  "DMS": {
+    "simulated": true,
+    "pin": 17
   }
 }
