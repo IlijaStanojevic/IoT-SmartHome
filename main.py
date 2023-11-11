@@ -37,9 +37,9 @@ if __name__ == "__main__":
         run_rpir1(rpir1_settings, threads, stop_event)
         run_rpir2(rpir2_settings, threads, stop_event)
         run_uds(dus1_settings, threads, stop_event)
-        run_db(db_settings, threads, stop_event)
+        # run_db(db_settings, threads, stop_event)
         run_ds(ds1_settings, threads, stop_event)
-        run_dms(dms_settings, threads, stop_event)
+        # run_dms(dms_settings, threads, stop_event)
         while True:
             time.sleep(1)
 

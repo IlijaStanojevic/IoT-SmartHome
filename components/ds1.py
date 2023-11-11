@@ -1,12 +1,14 @@
 import threading
 from simulators.ds import run_ds_simulator
-from OutputLock import OutputLock
+from OutputLock import output_lock
 
 def ds_callback(locked):
     if locked:
-        OutputLock.safe_print("Door is locked")
+        with output_lock:
+            print("Door is locked")
     else:
-        OutputLock.safe_print("Door is unlocked")
+        with output_lock:
+            print("Door is unlocked")
 
 def run_ds(settings, threads, stop_event):
     if settings['simulated']:

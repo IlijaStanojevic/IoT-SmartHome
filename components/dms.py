@@ -1,12 +1,14 @@
 import threading
 import time
 
+from OutputLock import output_lock
 from simulators.dms import run_dms_simulator
 
 
 def dms_callback(is_pressed):
     if is_pressed:
-        print(f"DMS input: {is_pressed}")
+        with output_lock:
+            print(f"DMS input: {is_pressed}")
 
 def run_dms(settings, threads, stop_event):
     if settings['simulated']:

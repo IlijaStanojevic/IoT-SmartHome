@@ -1,3 +1,4 @@
+from OutputLock import output_lock
 from simulators.db import run_db_simulator
 import threading
 import time
@@ -6,9 +7,11 @@ def buzz(pitch, duration):
     period = 1.0 / pitch
     delay = period / 2
     cycles = int(duration * pitch)
-    print("Started door buzzer")
+    with output_lock:
+        print("Started door buzzer")
     time.sleep(delay)
-    print("Ended door buzzer")
+    with output_lock:
+        print("Ended door buzzer")
     time.sleep(delay)
 
 
