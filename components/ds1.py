@@ -1,23 +1,20 @@
 import threading
-import time
-
 from simulators.ds import run_ds_simulator
-from simulators.uds import run_uds_simulator
-
+from OutputLock import OutputLock
 
 def ds_callback(locked):
     if locked:
-        print("Door is locked")
+        OutputLock.safe_print("Door is locked")
     else:
-        print("Door is unlocked")
+        OutputLock.safe_print("Door is unlocked")
 
 def run_ds(settings, threads, stop_event):
     if settings['simulated']:
-        print("Starting ds1 sumilator")
+        print("Starting ds1 simulator")
         ds1_thread = threading.Thread(target=run_ds_simulator, args=(2, ds_callback, stop_event))
         ds1_thread.start()
         threads.append(ds1_thread)
-        print("ds1 sumilator started")
+        print("ds1 simulator started")
     else:
         from sensors.dht import run_dht_loop, DHT
         print("Starting rdht1 loop")

@@ -1,3 +1,4 @@
+from OutputLock import OutputLock
 from simulators.dht import run_dht_simulator
 import threading
 import time
@@ -5,12 +6,12 @@ import time
 
 def dht_callback(humidity, temperature, code):
     t = time.localtime()
-    print("="*20)
-    print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
-    print(f"Code: {code}")
-    print(f"Humidity: {humidity}%")
-    print(f"Temperature: {temperature}°C")
-    print("=" * 20)
+    OutputLock.safe_print("="*20)
+    OutputLock.safe_print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
+    OutputLock.safe_print(f"Code: {code}")
+    OutputLock.safe_print(f"Humidity: {humidity}%")
+    OutputLock.safe_print(f"Temperature: {temperature}°C")
+    OutputLock.safe_print("=" * 20)
 
 
 def run_dht(settings, threads, stop_event):

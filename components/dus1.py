@@ -1,12 +1,13 @@
 import threading
 import time
 
+from OutputLock import OutputLock
 from simulators.uds import run_uds_simulator
 
 
 def uds_callback(distance):
     t = time.localtime()
-    print(f"Distance: {distance}cm")
+    OutputLock.safe_print(f"Distance: {distance}cm")
 
 def run_uds(settings, threads, stop_event):
     if settings['simulated']:
