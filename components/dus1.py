@@ -1,15 +1,17 @@
 import threading
 import time
-from simulators.uds import run_dus_simulator
+
+from simulators.uds import run_uds_simulator
+
 
 def dht_callback(distance):
     t = time.localtime()
     print(f"Distance: {distance}cm")
 
-def run_dus(settings, threads, stop_event):
+def run_uds(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting dus1 sumilator")
-        dht1_thread = threading.Thread(target=run_dus_simulator, args=(2, dht_callback, stop_event))
+        dht1_thread = threading.Thread(target=run_uds_simulator, args=(2, dht_callback, stop_event))
         dht1_thread.start()
         threads.append(dht1_thread)
         print("dus1 sumilator started")

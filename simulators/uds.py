@@ -20,7 +20,7 @@ def generate_values(initial_distance=200):
         yield distance
 
 
-def run_dus_simulator(delay, callback, stop_event):
+def run_uds_simulator(delay, callback, stop_event):
     for d in generate_values():
         time.sleep(delay)  # Delay between readings (adjust as needed)
         callback(d)
