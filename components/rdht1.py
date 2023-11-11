@@ -10,6 +10,7 @@ def dht_callback(humidity, temperature, code):
     print(f"Code: {code}")
     print(f"Humidity: {humidity}%")
     print(f"Temperature: {temperature}°C")
+    print("=" * 20)
 
 
 def run_dht(settings, threads, stop_event):
