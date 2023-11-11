@@ -14,5 +14,9 @@
   "rpir2": {
     "simulated": true,
     "pin": 17
+  },
+  "DUS1": {
+    "simulated": true,
+    "pin": 17
   }
 }

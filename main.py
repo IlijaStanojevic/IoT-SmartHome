@@ -3,6 +3,7 @@ import threading
 from components.dpir1 import run_dpir1
 from components.rpir1 import run_rpir1
 from components.rpir2 import run_rpir2
+from components.dus1 import run_dus
 from settings import load_settings
 from components.rdht1 import run_dht
 import time
@@ -28,6 +29,8 @@ if __name__ == "__main__":
         run_dpir1(dpir1_settings, threads, stop_event)
         run_rpir1(rpir1_settings, threads, stop_event)
         run_rpir2(rpir2_settings, threads, stop_event)
+        dus1_settings = settings['DUS1']
+        run_dus(dus1_settings, threads, stop_event)
         while True:
             time.sleep(1)
 
