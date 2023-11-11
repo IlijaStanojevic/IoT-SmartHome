@@ -14,11 +14,11 @@ def buzz(pitch, duration):
 
 def db_callback(is_buzz):
     t = time.localtime()
-    print("="*20)
-    print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
     if is_buzz == 1:
+        print("=" * 20)
+        print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
         buzz(440, 0.4)
-    print("=" * 20)
+        print("=" * 20)
 
 def run_db(settings, threads, stop_event):
     if settings['simulated']:
