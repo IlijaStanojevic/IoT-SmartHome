@@ -1,4 +1,3 @@
-from OutputLock import OutputLock
 from components.rdht1 import dht_callback
 from simulators.dht import run_dht_simulator
 import threading

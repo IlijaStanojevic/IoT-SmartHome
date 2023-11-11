@@ -1,18 +1,18 @@
-from OutputLock import OutputLock
 from simulators.dht import run_dht_simulator
 import threading
 import time
-
+from OutputLock import output_lock
 
 def dht_callback(humidity, temperature, code, device):
-    t = time.localtime()
-    OutputLock.safe_print("="*20)
-    OutputLock.safe_print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
-    OutputLock.safe_print(f"Code: {code}")
-    OutputLock.safe_print(f"Device: {device}")
-    OutputLock.safe_print(f"Humidity: {humidity}%")
-    OutputLock.safe_print(f"Temperature: {temperature}°C")
-    OutputLock.safe_print("=" * 20)
+    with output_lock:
+        # t = time.localtime()
+        print("="*20)
+        # print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
+        # print(f"Code: {code}")
+        print(f"Device: {device}")
+        print(f"Humidity: {humidity}%")
+        print(f"Temperature: {temperature}°C")
+        print("=" * 20)
 
 
 def run_rdht1(settings, threads, stop_event):
