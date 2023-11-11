@@ -5,6 +5,7 @@ from components.dms import run_dms
 from components.ds1 import run_ds
 from components.dus1 import run_uds
 from components.dpir1 import run_dpir1
+from components.rdht2 import run_rdht2
 from components.rpir1 import run_rpir1
 from components.rpir2 import run_rpir2
 from settings import load_settings
@@ -24,7 +25,8 @@ if __name__ == "__main__":
     threads = []
     stop_event = threading.Event()
     try:
-        dht1_settings = settings['RDHT1']
+        rdht1_settings = settings['RDHT1']
+        rdht2_settings = settings['RDHT2']
         dpir1_settings = settings["DPIR1"]
         rpir1_settings = settings["RPIR1"]
         rpir2_settings = settings["RPIR2"]
@@ -32,7 +34,8 @@ if __name__ == "__main__":
         ds1_settings = settings["DS1"]
         db_settings = settings["DB"]
         dms_settings = settings["DMS"]
-        run_rdht1(dht1_settings, threads, stop_event)
+        run_rdht1(rdht1_settings, threads, stop_event)
+        run_rdht2(rdht2_settings, threads, stop_event)
         run_dpir1(dpir1_settings, threads, stop_event)
         run_rpir1(rpir1_settings, threads, stop_event)
         run_rpir2(rpir2_settings, threads, stop_event)

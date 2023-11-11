@@ -3,6 +3,10 @@
     "simulated": true,
     "pin": 17
   },
+  "RDHT2": {
+    "simulated": true,
+    "pin": 17
+  },
   "DPIR1": {
     "simulated": true,
     "pin": 17
