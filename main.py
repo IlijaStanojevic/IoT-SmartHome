@@ -1,6 +1,6 @@
 import threading
 from settings import load_settings
-from components.dht import run_dht
+from components.rdht1 import run_dht
 import time
 
 try:
