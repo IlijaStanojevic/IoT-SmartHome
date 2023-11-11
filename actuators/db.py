@@ -12,3 +12,11 @@ def buzz(pitch, duration):
     time.sleep(delay)
     GPIO.output(buzzer_pin, False)
     time.sleep(delay)
+try:
+    while True:
+        pitch = 440
+        duration = 0.1
+        buzz(pitch, duration)
+        time.sleep(1)
+except KeyboardInterrupt:
+    GPIO.cleanup()

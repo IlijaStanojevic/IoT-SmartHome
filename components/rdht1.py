@@ -14,18 +14,18 @@ def dht_callback(humidity, temperature, code):
     OutputLock.safe_print("=" * 20)
 
 
-def run_dht(settings, threads, stop_event):
+def run_rdht1(settings, threads, stop_event):
         if settings['simulated']:
-            print("Starting dht1 sumilator")
-            dht1_thread = threading.Thread(target = run_dht_simulator, args=(2, dht_callback, stop_event))
-            dht1_thread.start()
-            threads.append(dht1_thread)
+            print("Starting rdth1 sumilator")
+            rdht1_thread = threading.Thread(target = run_dht_simulator, args=(2, dht_callback, stop_event))
+            rdht1_thread.start()
+            threads.append(rdht1_thread)
             print("RDht1 sumilator started")
         else:
             from sensors.dht import run_dht_loop, DHT
             print("Starting rdht1 loop")
             dht = DHT(settings['pin'])
-            dht1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, dht_callback, stop_event))
-            dht1_thread.start()
-            threads.append(dht1_thread)
+            rdht1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, dht_callback, stop_event))
+            rdht1_thread.start()
+            threads.append(rdht1_thread)
             print("RDht1 loop started")
