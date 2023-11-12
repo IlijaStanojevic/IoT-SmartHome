@@ -1,6 +1,7 @@
 import threading
 
 from components.db import run_db
+from components.dl import run_dl
 from components.dms import run_dms
 from components.ds1 import run_ds
 from components.dus1 import run_uds
@@ -28,22 +29,22 @@ def user_input_handler(threads, stop_event):
         print("4. Stop DL")
         print("0. Exit")
         choice = input("Enter your choice: ")[0]
-        print("CHOICE: ", choice)
         if choice == '1':
             stop_buzzer = threading.Event()
             run_db(db_settings, threads, stop_buzzer)
         elif choice == '2':
             stop_buzzer.set()
         elif choice == '3':
-            # run_dl(dms_settings, threads, stop_event)
-            pass
+            stop_door_light = threading.Event()
+            run_dl(dms_settings, threads, stop_door_light)
         elif choice == '4':
-            # run_dl(dms_settings, threads, stop_event)
-            pass
+            stop_door_light.set()
         elif choice == '0':
             print('Stopping app')
             for t in threads:
                 stop_event.set()
+                stop_door_light.set()
+                stop_buzzer.set()
             break
         else:
             print('Invalid choice. Please try again.')
