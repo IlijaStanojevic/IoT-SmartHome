@@ -10,6 +10,7 @@ from components.rpir1 import run_rpir1
 from components.rpir2 import run_rpir2
 from settings import load_settings
 from components.rdht1 import run_rdht1
+from OutputLock import output_lock
 import time
 
 try:
@@ -18,12 +19,44 @@ try:
 except:
     pass
 
+def user_input_handler(threads, stop_event):
+    while True:
+        print("\nMenu:")
+        print("1. Run DB")
+        print("2. Stop DB")
+        print("3. Run DL")
+        print("4. Stop DL")
+        print("0. Exit")
+        choice = input("Enter your choice: ")[0]
+        print("CHOICE: ", choice)
+        if choice == '1':
+            stop_buzzer = threading.Event()
+            run_db(db_settings, threads, stop_buzzer)
+        elif choice == '2':
+            stop_buzzer.set()
+        elif choice == '3':
+            # run_dl(dms_settings, threads, stop_event)
+            pass
+        elif choice == '4':
+            # run_dl(dms_settings, threads, stop_event)
+            pass
+        elif choice == '0':
+            print('Stopping app')
+            for t in threads:
+                stop_event.set()
+            break
+        else:
+            print('Invalid choice. Please try again.')
+        time.sleep(0.5)
+
 
 if __name__ == "__main__":
     print('Starting app')
     settings = load_settings()
     threads = []
     stop_event = threading.Event()
+    stop_buzzer = threading.Event()
+    stop_door_light = threading.Event()
     try:
         rdht1_settings = settings['RDHT1']
         rdht2_settings = settings['RDHT2']
@@ -42,7 +75,10 @@ if __name__ == "__main__":
         run_uds(dus1_settings, threads, stop_event)
         # run_db(db_settings, threads, stop_event)
         run_ds(ds1_settings, threads, stop_event)
-        # run_dms(dms_settings, threads, stop_event)
+        run_dms(dms_settings, threads, stop_event)
+
+        user_input_thread = threading.Thread(target=user_input_handler, args=(threads, stop_event))
+        user_input_thread.start()
         while True:
             time.sleep(1)
 
@@ -50,3 +86,4 @@ if __name__ == "__main__":
         print('Stopping app')
         for t in threads:
             stop_event.set()
+        user_input_thread.join()
