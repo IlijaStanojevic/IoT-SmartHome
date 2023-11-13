@@ -1,22 +1,29 @@
 import RPi.GPIO as GPIO
 import time
-GPIO.setmode(GPIO.BCM)
-buzzer_pin = 17
-GPIO.setup(buzzer_pin, GPIO.OUT)
-def buzz(pitch, duration):
-    period = 1.0 / pitch
-    delay = period / 2
-    cycles = int(duration * pitch)
-    for i in range(cycles):
-        GPIO.output(buzzer_pin, True)
-    time.sleep(delay)
-    GPIO.output(buzzer_pin, False)
-    time.sleep(delay)
-try:
+
+class Buzzer(object):
+    def __init__(self, pin):
+        self.BUZZER_PIN = pin
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.BUZZER_PIN, GPIO.IN)
+
+    def buzz(self, pitch, duration):
+        period = 1.0 / pitch
+        delay = period / 2
+        cycles = int(duration * pitch)
+        for i in range(cycles):
+            GPIO.output(self.BUZZER_PIN, True)
+        time.sleep(delay)
+        GPIO.output(self.BUZZER_PIN, False)
+        time.sleep(delay)
+
+
+def run_db_loop(buzzer, delay, callback, stop_event):
     while True:
         pitch = 440
         duration = 0.1
-        buzz(pitch, duration)
-        time.sleep(1)
-except KeyboardInterrupt:
-    GPIO.cleanup()
+        buzzer.buzz(pitch, duration)
+        callback(1)
+        if stop_event.is_set():
+            break
+        time.sleep(delay)

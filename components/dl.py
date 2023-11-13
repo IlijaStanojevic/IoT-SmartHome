@@ -1,6 +1,4 @@
-from OutputLock import output_lock
 from components.db import db_callback
-from simulators.db import run_db_simulator
 import threading
 import time
 
@@ -24,7 +22,7 @@ def run_dl(settings, threads, stop_event):
         threads.append(dl_thread)
         print("Dl simulator started")
     else:
-        from sensors.led import run_led_loop, LED
+        from actuators.led import run_led_loop, LED
         print("Starting dl loop")
         led = LED(settings['pin'])
         dl_thread = threading.Thread(target=run_led_loop, args=(led, 2, db_callback, stop_event))

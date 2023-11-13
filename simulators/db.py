@@ -1,14 +1,17 @@
 import time
 import random
 
+
+
+
 def generate_values():
+    period = 1.0 / 440
+    delay = period / 2
     while True:
+        time.sleep(delay)
         yield 1
-        # buzz = random.choice([0, 1])
-        # if buzz == 1:
-        #     yield 1
-        # else:
-        #     yield 0
+        time.sleep(delay)
+
 
 
 def run_db_simulator(delay, callback, stop_event):
