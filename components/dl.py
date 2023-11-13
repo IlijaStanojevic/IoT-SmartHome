@@ -18,16 +18,16 @@ def dl_callback(is_light_on):
 
 def run_dl(settings, threads, stop_event):
     if settings['simulated']:
-        print("Starting dl sumilator")
-        dpir1_thread = threading.Thread(target=run_dl_simulator, args=(2, dl_callback, stop_event))
-        dpir1_thread.start()
-        threads.append(dpir1_thread)
+        print("Starting dl simulator")
+        dl_thread = threading.Thread(target=run_dl_simulator, args=(2, dl_callback, stop_event))
+        dl_thread.start()
+        threads.append(dl_thread)
         print("Dl simulator started")
     else:
-        from sensors.dht import run_dht_loop, DHT
-        print("Starting db loop")
-        dht = DHT(settings['pin'])
-        dpir1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, db_callback, stop_event))
-        dpir1_thread.start()
-        threads.append(dpir1_thread)
-        print("Db loop started")
+        from sensors.led import run_led_loop, LED
+        print("Starting dl loop")
+        led = LED(settings['pin'])
+        dl_thread = threading.Thread(target=run_led_loop, args=(led, 2, db_callback, stop_event))
+        dl_thread.start()
+        threads.append(dl_thread)
+        print("Dl loop started")
