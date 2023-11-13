@@ -26,10 +26,10 @@ def run_rpir1(settings, threads, stop_event):
         threads.append(rpir1_thread)
         print("Rpir1 simulator started")
     else:
-        from sensors.dht import run_dht_loop, DHT
-        print("Starting rdht1 loop")
-        dht = DHT(settings['pin'])
-        rpir1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, pir_callback, stop_event))
+        from sensors.pir import run_pir_loop, PIR
+        print("Starting rpir1 loop")
+        pir = PIR(settings['pin'])
+        rpir1_thread = threading.Thread(target=run_pir_loop, args=(pir, 2, pir_callback, stop_event, "rpir1"))
         rpir1_thread.start()
         threads.append(rpir1_thread)
-        print("RDht1 loop started")
+        print("rpir1 loop started")
