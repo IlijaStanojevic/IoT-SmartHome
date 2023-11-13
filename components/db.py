@@ -18,7 +18,8 @@ def db_callback(is_buzz):
     if is_buzz == 1:
         print("=" * 20)
         print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
-        buzz(440, 0.4)
+        # buzz(440, 0.4)
+        print("Door buzzing")
         print("=" * 20)
 
 def run_db(settings, threads, stop_event):
