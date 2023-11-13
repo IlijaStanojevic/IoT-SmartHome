@@ -31,12 +31,19 @@
     "simulated": true,
     "pin": 17
   },
-  "DMS": {
-    "simulated": true,
-    "pin": 17
-  },
   "DL": {
     "simulated": true,
     "pin": 17
+  },
+  "DMS": {
+    "simulated": true,
+    "pin_R1": 25,
+    "pin_R2": 8,
+    "pin_R3": 7,
+    "pin_R4": 1,
+    "pin_C1": 12,
+    "pin_C2": 16,
+    "pin_C3": 20,
+    "pin_C4": 21
   }
 }

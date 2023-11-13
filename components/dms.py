@@ -18,10 +18,10 @@ def run_dms(settings, threads, stop_event):
         threads.append(dms_thread)
         print("DMS simulator started")
     else:
-        from sensors.dht import run_dht_loop, DHT
-        print("Starting rdht1 loop")
-        dht = DHT(settings['pin'])
-        dht1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, dms_callback, stop_event))
+        from sensors.dms import run_dms_loop, DMS
+        print("Starting dms loop")
+        dms = DMS(settings)
+        dht1_thread = threading.Thread(target=run_dms_loop, args=(dms, 2, dms_callback, stop_event))
         dht1_thread.start()
         threads.append(dht1_thread)
-        print("RDht1 loop started")
+        print("Dms loop started")

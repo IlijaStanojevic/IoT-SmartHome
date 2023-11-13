@@ -6,9 +6,9 @@ class PIR(object):
     def __init__(self, pin):
         self.PIR_PIN = pin
         self.motion = 0
-    def read_sensor(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.PIR_PIN, GPIO.IN)
+    def read_sensor(self):
         def motion_detected(channel):
             self.motion = 1
         def no_motion(channel):
