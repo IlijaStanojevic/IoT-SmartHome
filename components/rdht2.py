@@ -16,9 +16,9 @@ def run_rdht2(settings, threads, stop_event):
             print("RDHT2 simulator started")
         else:
             from sensors.dht import run_dht_loop, DHT
-            print("Starting rdht1 loop")
+            print("Starting rdht2 loop")
             dht = DHT(settings['pin'])
-            rdht1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, dht_callback, stop_event))
+            rdht1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, dht_callback, stop_event, "RDHT2"))
             rdht1_thread.start()
             threads.append(rdht1_thread)
-            print("RDht1 loop started")
+            print("RDht2 loop started")

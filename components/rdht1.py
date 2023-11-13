@@ -26,7 +26,7 @@ def run_rdht1(settings, threads, stop_event):
             from sensors.dht import run_dht_loop, DHT
             print("Starting rdht1 loop")
             dht = DHT(settings['pin'])
-            rdht1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, dht_callback, stop_event))
+            rdht1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, dht_callback, stop_event, "RDHT1"))
             rdht1_thread.start()
             threads.append(rdht1_thread)
             print("RDht1 loop started")
