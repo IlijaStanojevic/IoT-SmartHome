@@ -18,10 +18,10 @@ def run_ds(settings, threads, stop_event):
         threads.append(ds1_thread)
         print("ds1 simulator started")
     else:
-        from sensors.dht import run_dht_loop, DHT
-        print("Starting rdht1 loop")
-        dht = DHT(settings['pin'])
-        dht1_thread = threading.Thread(target=run_dht_loop, args=(dht, 2, ds_callback, stop_event))
-        dht1_thread.start()
-        threads.append(dht1_thread)
+        from sensors.ds import run_ds_loop, DS
+        print("Starting ds1 loop")
+        dht = DS(settings['pin'])
+        ds1_thread = threading.Thread(target=run_ds_loop, args=(dht, 2, ds_callback, stop_event))
+        ds1_thread.start()
+        threads.append(ds1_thread)
         print("RDht1 loop started")
