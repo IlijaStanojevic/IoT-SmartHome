@@ -18,7 +18,7 @@ def run_uds(settings, threads, stop_event):
         from sensors.uds import run_uds_loop, UDS
         print("Starting rdht1 loop")
         dht = UDS(settings)
-        dus1_thread = threading.Thread(target=run_uds_loop, args=(dht, 2, uds_callback, stop_event))
+        dus1_thread = threading.Thread(target=run_uds_loop, args=(dht, 2, uds_callback, stop_event, "Marko ne zna"))
         dus1_thread.start()
         threads.append(dus1_thread)
         print("RDht1 loop started")

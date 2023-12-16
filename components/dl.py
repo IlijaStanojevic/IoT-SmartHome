@@ -25,7 +25,7 @@ def run_dl(settings, threads, stop_event):
         from actuators.led import run_led_loop, LED
         print("Starting dl loop")
         led = LED(settings['pin'])
-        dl_thread = threading.Thread(target=run_led_loop, args=(led, 2, db_callback, stop_event))
+        dl_thread = threading.Thread(target=run_led_loop, args=(led, 2, dl_callback, stop_event))
         dl_thread.start()
         threads.append(dl_thread)
         print("Dl loop started")

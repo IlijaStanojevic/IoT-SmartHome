@@ -21,6 +21,8 @@ except:
     pass
 
 def user_input_handler(threads, stop_event):
+    dl_settings = settings["DL"]
+    db_settings = settings["DB"]
     while True:
         print("\nMenu:")
         print("1. Run DB")
@@ -36,7 +38,7 @@ def user_input_handler(threads, stop_event):
             stop_buzzer.set()
         elif choice == '3':
             stop_door_light = threading.Event()
-            run_dl(dms_settings, threads, stop_door_light)
+            run_dl(dl_settings, threads, stop_door_light)
         elif choice == '4':
             stop_door_light.set()
         elif choice == '0':
@@ -59,24 +61,24 @@ if __name__ == "__main__":
     stop_buzzer = threading.Event()
     stop_door_light = threading.Event()
     try:
-        rdht1_settings = settings['RDHT1']
-        rdht2_settings = settings['RDHT2']
-        dpir1_settings = settings["DPIR1"]
-        rpir1_settings = settings["RPIR1"]
-        rpir2_settings = settings["RPIR2"]
+        # rdht1_settings = settings['RDHT1']
+        # rdht2_settings = settings['RDHT2']
+        # dpir1_settings = settings["DPIR1"]
+        # rpir1_settings = settings["RPIR1"]
+        # rpir2_settings = settings["RPIR2"]
         dus1_settings = settings['DUS1']
-        ds1_settings = settings["DS1"]
-        db_settings = settings["DB"]
-        dms_settings = settings["DMS"]
-        run_rdht1(rdht1_settings, threads, stop_event)
-        run_rdht2(rdht2_settings, threads, stop_event)
-        run_dpir1(dpir1_settings, threads, stop_event)
-        run_rpir1(rpir1_settings, threads, stop_event)
-        run_rpir2(rpir2_settings, threads, stop_event)
+        # ds1_settings = settings["DS1"]
+        # db_settings = settings["DB"]
+        # dms_settings = settings["DMS"]
+        # run_rdht1(rdht1_settings, threads, stop_event)
+        # run_rdht2(rdht2_settings, threads, stop_event)
+        # run_dpir1(dpir1_settings, threads, stop_event)
+        # run_rpir1(rpir1_settings, threads, stop_event)
+        # run_rpir2(rpir2_settings, threads, stop_event)
         run_uds(dus1_settings, threads, stop_event)
         # run_db(db_settings, threads, stop_event)
-        run_ds(ds1_settings, threads, stop_event)
-        run_dms(dms_settings, threads, stop_event)
+        # run_ds(ds1_settings, threads, stop_event)
+        # run_dms(dms_settings, threads, stop_event)
 
         user_input_thread = threading.Thread(target=user_input_handler, args=(threads, stop_event))
         user_input_thread.start()

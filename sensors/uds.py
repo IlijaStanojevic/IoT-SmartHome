@@ -17,7 +17,7 @@ class UDS(object):
         pulse_start_time = time.time()
         pulse_end_time = time.time()
 
-        max_iter = 100
+        max_iter = 5000
 
         iter = 0
         while GPIO.input(self.ECHO_PIN) == 0:
@@ -39,7 +39,7 @@ class UDS(object):
 
 def run_uds_loop(uds, delay, callback, stop_event, device):
     while True:
-        callback(uds.read_sensor(), device)
+        callback(uds.read_sensor())
         if stop_event.is_set():
             break
         time.sleep(delay)  # Delay between readings
