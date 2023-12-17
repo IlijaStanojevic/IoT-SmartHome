@@ -3,16 +3,6 @@ from simulators.db import run_db_simulator
 import threading
 import time
 
-def buzz(pitch, duration):
-    period = 1.0 / pitch
-    delay = period / 2
-    with output_lock:
-        print("Started door buzzer")
-    time.sleep(delay)
-    with output_lock:
-        print("Ended door buzzer")
-
-
 def db_callback(is_buzz):
     t = time.localtime()
     if is_buzz == 1:

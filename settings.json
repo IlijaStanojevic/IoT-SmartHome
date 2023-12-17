@@ -20,7 +20,7 @@
     "pin": 17
   },
   "DUS1": {
-    "simulated": false,
+    "simulated": true,
     "TRIG_PIN": 23,
     "ECHO_PIN": 24
   },
