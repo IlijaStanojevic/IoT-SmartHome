@@ -1,3 +1,4 @@
+from OutputLock import output_lock
 from components.db import db_callback
 import threading
 import time
@@ -9,10 +10,11 @@ from simulators.led import run_dl_simulator
 def dl_callback(is_light_on):
     t = time.localtime()
     if is_light_on == 1:
-        print("=" * 20)
-        print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
-        print("Door light is on")
-        print("=" * 20)
+        with output_lock:
+            print("=" * 20)
+            print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
+            print("Door light is on")
+            print("=" * 20)
 
 def run_dl(settings, threads, stop_event):
     if settings['simulated']:
