@@ -4,10 +4,8 @@ from simulators.pir import run_pir_simulator
 from OutputLock import output_lock
 
 def motion_detected(device):
-    with output_lock:
         print(f"Motion detected at {device}")
 def no_motion(device):
-    with output_lock:
         print(f"No motion detected at {device}")
 
 def pir_callback(motion, device):
