@@ -2,20 +2,23 @@ import threading
 import time
 
 from OutputLock import output_lock
+from daemons import dmsDaemon
 from simulators.dms import run_dms_simulator
 
 
 def dms_callback(input, settings):
     if input:
+
         with output_lock:
             print(f"DMS input: {input}")
-    dms_payload = {
-        "measurement": "Membrane-switch",
-        "simulated": settings['simulated'],
-        "runs_on": settings["runs_on"],
-        "name": settings["name"],
-        "value": input
-    }
+            dms_payload = {
+                "measurement": "Membrane-switch",
+                "simulated": settings['simulated'],
+                "runs_on": settings["runs_on"],
+                "name": settings["name"],
+                "value": input
+            }
+            dmsDaemon.dms_batch.append(dms_payload)
 def run_dms(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting dms simulator")
