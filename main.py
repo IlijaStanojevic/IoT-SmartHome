@@ -66,16 +66,15 @@ if __name__ == "__main__":
         dpir1_settings = settings["DPIR1"]
         rpir1_settings = settings["RPIR1"]
         rpir2_settings = settings["RPIR2"]
-        # dus1_settings = settings['DUS1']
+        dus1_settings = settings['DUS1']
         ds1_settings = settings["DS1"]
-        # db_settings = settings["DB"]
         dms_settings = settings["DMS"]
         run_rdht1(rdht1_settings, threads, stop_event)
         run_rdht2(rdht2_settings, threads, stop_event)
         run_dpir1(dpir1_settings, threads, stop_event)
         run_rpir1(rpir1_settings, threads, stop_event)
         run_rpir2(rpir2_settings, threads, stop_event)
-        # run_uds(dus1_settings, threads, stop_event)
+        run_uds(dus1_settings, threads, stop_event)
         run_ds(ds1_settings, threads, stop_event)
         run_dms(dms_settings, threads, stop_event)
 
