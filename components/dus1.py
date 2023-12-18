@@ -1,18 +1,27 @@
+import json
 import threading
 import time
+
+from daemons import udsDaemon
 from simulators.uds import run_uds_simulator
 from OutputLock import output_lock
 
 def uds_callback(distance, settings):
     with output_lock:
         print(f"Distance: {distance}cm")
-    duds_payload = {
+    uds_payload = {
         "measurement": "Distance",
         "simulated": settings['simulated'],
         "runs_on": settings["runs_on"],
         "name": settings["name"],
         "value": distance
     }
+    with output_lock:
+        udsDaemon.uds_batch.append((settings["name"], json.dumps(uds_payload), 0, True))
+        udsDaemon.publish_data_counter += 1
+        if udsDaemon.publish_data_counter >= udsDaemon.publish_data_limit:
+            udsDaemon.publish_event.set()
+
 def run_uds(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting dus1 sumilator")
