@@ -14,6 +14,22 @@ def dht_callback(humidity, temperature, code, settings):
         print(f"Temperature: {temperature}°C")
         print("=" * 20)
 
+    temp_payload = {
+        "measurement": "Temperature",
+        "simulated": settings['simulated'],
+        "runs_on": settings["runs_on"],
+        "name": settings["name"],
+        "value": temperature
+    }
+
+    humidity_payload = {
+        "measurement": "Humidity",
+        "simulated": settings['simulated'],
+        "runs_on": settings["runs_on"],
+        "name": settings["name"],
+        "value": humidity
+    }
+
 
 def run_rdht1(settings, threads, stop_event):
         if settings['simulated']:
