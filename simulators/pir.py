@@ -6,9 +6,9 @@ def generate_values():
     while True:
         motion = random.choice([0, 1])
         if motion == 1:
-            yield 1
+            yield True
         else:
-            yield 0
+            yield False
 
 
 def run_pir_simulator(delay, callback, stop_event,settings):

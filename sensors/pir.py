@@ -10,9 +10,9 @@ class PIR(object):
         GPIO.setup(self.PIR_PIN, GPIO.IN)
     def read_sensor(self):
         def motion_detected(channel):
-            self.motion = 1
+            self.motion = True
         def no_motion(channel):
-            self.motion = 0
+            self.motion = False
         GPIO.add_event_detect(self.PIR_PIN, GPIO.RISING, callback=motion_detected)
         GPIO.add_event_detect(self.PIR_PIN, GPIO.FALLING, callback=no_motion)
 
