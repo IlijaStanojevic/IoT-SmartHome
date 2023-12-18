@@ -6,7 +6,13 @@ from OutputLock import output_lock
 def uds_callback(distance, settings):
     with output_lock:
         print(f"Distance: {distance}cm")
-
+    duds_payload = {
+        "measurement": "Distance",
+        "simulated": settings['simulated'],
+        "runs_on": settings["runs_on"],
+        "name": settings["name"],
+        "value": distance
+    }
 def run_uds(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting dus1 sumilator")

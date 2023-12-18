@@ -8,7 +8,6 @@ class LED(object):
         self.motion = 0
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.LED_PIN, GPIO.OUT)
-        print(":D")
     def ligth_on(self):
         GPIO.output(self.LED_PIN,GPIO.HIGH)
     def ligth_off(self):

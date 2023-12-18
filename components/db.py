@@ -3,13 +3,12 @@ from simulators.db import run_db_simulator
 import threading
 import time
 
-def db_callback(is_buzz, settigns):
+def db_callback(is_buzz, settings):
     t = time.localtime()
     if is_buzz == 1:
         with output_lock:
             print("=" * 20)
             print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
-            # buzz(440, 0.4)
             print("Door buzzing")
             print("=" * 20)
 

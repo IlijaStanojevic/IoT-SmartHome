@@ -17,7 +17,13 @@ def pir_callback(motion, settings):
         else:
             no_motion(settings["name"])
         print("=" * 20)
-
+    pir_payload = {
+        "measurement": "Motion",
+        "simulated": settings['simulated'],
+        "runs_on": settings["runs_on"],
+        "name": settings["name"],
+        "value": motion
+    }
 
 def run_rpir1(settings, threads, stop_event):
     if settings['simulated']:

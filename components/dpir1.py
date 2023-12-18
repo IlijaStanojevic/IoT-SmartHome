@@ -2,22 +2,13 @@ import threading
 import time
 from simulators.pir import run_pir_simulator
 from OutputLock import output_lock
-
+from components.rpir1 import pir_callback
 def motion_detected(device):
     print(f"Motion detected at {device}")
 def no_motion(device):
     print(f"No motion detected at {device}")
 
-def pir_callback(motion,  settings):
-    with output_lock:
-        # t = time.localtime()
-        print("="*20)
-        # print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
-        if motion == 1:
-            motion_detected(settings["name"])
-        else:
-            no_motion(settings["name"])
-        print("=" * 20)
+
 
 
 def run_dpir1(settings, threads, stop_event):

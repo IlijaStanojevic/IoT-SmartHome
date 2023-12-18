@@ -9,7 +9,13 @@ def ds_callback(locked, settings):
     else:
         with output_lock:
             print("Door is unlocked")
-
+    ds_payload = {
+        "measurement": "Door-sensor",
+        "simulated": settings['simulated'],
+        "runs_on": settings["runs_on"],
+        "name": settings["name"],
+        "value": locked
+    }
 def run_ds(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting ds1 simulator")
