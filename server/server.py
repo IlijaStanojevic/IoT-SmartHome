@@ -9,8 +9,8 @@ app = Flask(__name__)
 
 
 # InfluxDB Configuration
-token = "zyzbZIDKrSke5-UshLd5HT8yUNcmCM2lIMWYnUqwwdai5AiboSeI5LlCXtT3oRjmClGhrAl68yLTAeBqMu2HDA=="
-org = "FTN"
+token = "t2SGVL57j6_eMg1af8UzQYrDONEWWHM4rejNoX47WIj0rBA48UVe7UqIw7HI-SD6FAhbsJsrmrvWJKecmwO97A=="
+org = "ftn"
 url = "http://localhost:8086"
 bucket = "iot-smart-home"
 influxdb_client = InfluxDBClient(url=url, token=token, org=org)
@@ -31,7 +31,6 @@ mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg
 
 
 def save_to_db(data):
-    print(data)
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
     point = (
         Point(data["measurement"])
@@ -72,8 +71,7 @@ def handle_influx_query(query):
 @app.route('/simple_query', methods=['GET'])
 def retrieve_simple_data():
     query = f"""from(bucket: "{bucket}")
-    |> range(start: -10m)
-    |> filter(fn: (r) => r._measurement == "Humidity")"""
+    |> range(start: -10m)"""
     return handle_influx_query(query)
 
 

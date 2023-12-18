@@ -1,5 +1,8 @@
+import json
 import threading
 import time
+
+from daemons import pirDaemon
 from simulators.pir import run_pir_simulator
 from OutputLock import output_lock
 
@@ -24,6 +27,11 @@ def pir_callback(motion, settings):
         "name": settings["name"],
         "value": motion
     }
+    with output_lock:
+        pirDaemon.pir_batch.append((settings["name"], json.dumps(pir_payload), 0, True))
+        pirDaemon.publish_data_counter += 1
+        if pirDaemon.publish_data_counter >= pirDaemon.publish_data_limit:
+            pirDaemon.publish_event.set()
 
 def run_rpir1(settings, threads, stop_event):
     if settings['simulated']:

@@ -1,3 +1,4 @@
+import json
 import threading
 import time
 
@@ -18,7 +19,7 @@ def dms_callback(input, settings):
                 "name": settings["name"],
                 "value": input
             }
-            dmsDaemon.dms_batch.append(dms_payload)
+            dmsDaemon.dms_batch.append((settings["name"], json.dumps(dms_payload), 0, True))
             dmsDaemon.publish_data_counter += 1
             if dmsDaemon.publish_data_counter >= dmsDaemon.publish_data_limit:
                 dmsDaemon.publish_event.set()

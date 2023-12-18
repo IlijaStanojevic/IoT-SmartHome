@@ -1,3 +1,6 @@
+import json
+
+from daemons import dhtDaemon
 from simulators.dht import run_dht_simulator
 import threading
 import time
@@ -29,6 +32,12 @@ def dht_callback(humidity, temperature, code, settings):
         "name": settings["name"],
         "value": humidity
     }
+    with output_lock:
+        dhtDaemon.dht_batch.append((settings["name"], json.dumps(temp_payload), 0, True))
+        dhtDaemon.dht_batch.append((settings["name"], json.dumps(humidity_payload), 0, True))
+        dhtDaemon.publish_data_counter += 1
+        if dhtDaemon.publish_data_counter >= dhtDaemon.publish_data_limit:
+            dhtDaemon.publish_event.set()
 
 
 def run_rdht1(settings, threads, stop_event):
