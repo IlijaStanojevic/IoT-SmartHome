@@ -14,9 +14,9 @@ def generate_values():
 
 
 
-def run_db_simulator(delay, callback, stop_event):
+def run_db_simulator(delay, callback, stop_event, settings):
     for b in generate_values():
         time.sleep(delay)  # Delay between readings (adjust as needed)
-        callback(b)
+        callback(b, settings)
         if stop_event.is_set():
             break

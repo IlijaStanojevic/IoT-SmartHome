@@ -15,10 +15,10 @@ class LED(object):
         GPIO.output(self.LED_PIN,GPIO.LOW)
 
 
-def run_led_loop(led, delay, callback, stop_event):
+def run_led_loop(led, delay, callback, stop_event, settings):
     while True:
         led.ligth_on()
-        callback(1)
+        callback(1, settings)
         if stop_event.is_set():
             led.ligth_off()
             break

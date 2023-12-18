@@ -11,9 +11,9 @@ def generate_values():
             yield 0
 
 
-def run_pir_simulator(delay, callback, stop_event, device):
+def run_pir_simulator(delay, callback, stop_event,settings):
     for m in generate_values():
         time.sleep(delay)  # Delay between readings (adjust as needed)
-        callback(m, device)
+        callback(m, settings)
         if stop_event.is_set():
             break

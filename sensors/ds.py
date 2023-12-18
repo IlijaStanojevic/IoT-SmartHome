@@ -19,10 +19,10 @@ class DS(object):
         GPIO.add_event_detect(self.BUTTON_PIN, GPIO.FALLING, callback=button_not_clicked(), bouncetime=100)
 
 
-def run_ds_loop(ds, delay, callback, stop_event, device):
+def run_ds_loop(ds, delay, callback, stop_event, settings):
     while True:
         ds.read_sensor()
-        callback(ds.clicked, device)
+        callback(ds.clicked, settings)
         if stop_event.is_set():
             break
         time.sleep(delay)  # Delay between readings

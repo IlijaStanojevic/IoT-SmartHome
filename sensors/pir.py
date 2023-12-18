@@ -17,10 +17,10 @@ class PIR(object):
         GPIO.add_event_detect(self.PIR_PIN, GPIO.FALLING, callback=no_motion)
 
 
-def run_pir_loop(pir, delay, callback, stop_event, device):
+def run_pir_loop(pir, delay, callback, stop_event, settings):
     while True:
         pir.read_sensor()
-        callback(pir.motion, device)
+        callback(pir.motion, settings)
         if stop_event.is_set():
             break
         time.sleep(delay)  # Delay between readings

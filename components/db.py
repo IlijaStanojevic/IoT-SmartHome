@@ -3,7 +3,7 @@ from simulators.db import run_db_simulator
 import threading
 import time
 
-def db_callback(is_buzz):
+def db_callback(is_buzz, settigns):
     t = time.localtime()
     if is_buzz == 1:
         with output_lock:
@@ -16,7 +16,7 @@ def db_callback(is_buzz):
 def run_db(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting db sumilator")
-        db_thread = threading.Thread(target=run_db_simulator, args=(2, db_callback, stop_event))
+        db_thread = threading.Thread(target=run_db_simulator, args=(2, db_callback, stop_event, settings))
         db_thread.start()
         threads.append(db_thread)
         print("Db simulator started")
@@ -24,7 +24,7 @@ def run_db(settings, threads, stop_event):
         from actuators.db import run_db_loop, Buzzer
         print("Starting db loop")
         buzzer = Buzzer(settings['pin'])
-        db_thread = threading.Thread(target=run_db_loop, args=(buzzer, 2, db_callback, stop_event))
+        db_thread = threading.Thread(target=run_db_loop, args=(buzzer, 2, db_callback, stop_event, settings))
         db_thread.start()
         threads.append(db_thread)
         print("Db loop started")

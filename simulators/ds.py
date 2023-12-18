@@ -14,9 +14,9 @@ def generate_values():
             locked = True
             countdown = random.randint(1, 4)
         yield locked
-def run_ds_simulator(delay, callback, stop_event):
+def run_ds_simulator(delay, callback, stop_event, settings):
     for d in generate_values():
         time.sleep(delay)
-        callback(d)
+        callback(d, settings)
         if stop_event.is_set():
             break

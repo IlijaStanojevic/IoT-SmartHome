@@ -8,22 +8,22 @@ def motion_detected(device):
 def no_motion(device):
     print(f"No motion detected at {device}")
 
-def pir_callback(motion, device):
+def pir_callback(motion,  settings):
     with output_lock:
         # t = time.localtime()
         print("="*20)
         # print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
         if motion == 1:
-            motion_detected(device)
+            motion_detected(settings["name"])
         else:
-            no_motion(device)
+            no_motion(settings["name"])
         print("=" * 20)
 
 
 def run_dpir1(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting dpir1 sumilator")
-        dpir1_thread = threading.Thread(target=run_pir_simulator, args=(4, pir_callback, stop_event, "dpir1"))
+        dpir1_thread = threading.Thread(target=run_pir_simulator, args=(4, pir_callback, stop_event, settings))
         dpir1_thread.start()
         threads.append(dpir1_thread)
         print("Dpir1 simulator started")
@@ -31,7 +31,7 @@ def run_dpir1(settings, threads, stop_event):
         from sensors.pir import run_pir_loop, PIR
         print("Starting dpir1 loop")
         pir = PIR(settings['pin'])
-        dpir1_thread = threading.Thread(target=run_pir_loop, args=(pir, 2, pir_callback, stop_event, "dpir1"))
+        dpir1_thread = threading.Thread(target=run_pir_loop, args=(pir, 2, pir_callback, stop_event, settings))
         dpir1_thread.start()
         threads.append(dpir1_thread)
         print("Dpir1 loop started")

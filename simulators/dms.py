@@ -9,9 +9,9 @@ def generate_values():
             yield dms
         else:
             yield None
-def run_dms_simulator(delay, callback, stop_event):
+def run_dms_simulator(delay, callback, stop_event, settings):
     for d in generate_values():
         time.sleep(delay)
-        callback(d)
+        callback(d, settings)
         if stop_event.is_set():
             break

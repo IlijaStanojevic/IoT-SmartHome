@@ -48,10 +48,10 @@ class DMS(object):
 
 
 
-def run_dms_loop(dms, delay, callback, stop_event):
+def run_dms_loop(dms, delay, callback, stop_event, settings):
     while True:
         dms.read_input()
-        callback(dms.input)
+        callback(dms.input, settings)
         if stop_event.is_set():
             break
         time.sleep(delay)  # Delay between readings

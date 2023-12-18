@@ -18,12 +18,12 @@ class Buzzer(object):
             time.sleep(delay)
 
 
-def run_db_loop(buzzer, delay, callback, stop_event):
+def run_db_loop(buzzer, delay, callback, stop_event, settings):
     while True:
         pitch = 440
         duration = 0.3
         buzzer.buzz(pitch, duration)
-        callback(1)
+        callback(1, settings)
         if stop_event.is_set():
             break
         time.sleep(delay)
