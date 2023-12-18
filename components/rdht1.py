@@ -9,7 +9,7 @@ def dht_callback(humidity, temperature, code, settings):
         print("="*20)
         # print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
         # print(f"Code: {code}")
-        print(f"Device: {settings["name"]}")
+        print(f"Device:" + settings["name"])
         print(f"Humidity: {humidity}%")
         print(f"Temperature: {temperature}°C")
         print("=" * 20)
