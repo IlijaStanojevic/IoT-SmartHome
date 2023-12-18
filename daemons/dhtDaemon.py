@@ -20,7 +20,7 @@ def publisher_task(event, dht_batch):
             dht_batch.clear()
         publish.multiple(local_dms_batch, hostname=HOSTNAME, port=PORT)
         with OutputLock.output_lock:
-            print(f'published {publish_data_limit} ds values')
+            print(f'published {publish_data_limit} dht values')
         event.clear()
 
 

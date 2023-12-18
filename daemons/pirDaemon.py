@@ -20,7 +20,7 @@ def publisher_task(event, pir_batch):
             pir_batch.clear()
         publish.multiple(local_dms_batch, hostname=HOSTNAME, port=PORT)
         with OutputLock.output_lock:
-            print(f'published {publish_data_limit} ds values')
+            print(f'published {publish_data_limit} pir values')
         event.clear()
 
 
