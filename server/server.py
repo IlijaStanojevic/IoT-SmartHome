@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 
 # InfluxDB Configuration
-token = "zKcXPccb8zJDCD8v3QynR6uAkTIJS2gbNS-1sLAFypg1aUcQimnpUUNdqnDGhX6jp9wvcFXgaDQAMvZts76iJQ=="
+token = "zyzbZIDKrSke5-UshLd5HT8yUNcmCM2lIMWYnUqwwdai5AiboSeI5LlCXtT3oRjmClGhrAl68yLTAeBqMu2HDA=="
 org = "FTN"
 url = "http://localhost:8086"
 bucket = "iot-smart-home"
@@ -31,6 +31,7 @@ mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg
 
 
 def save_to_db(data):
+    print(data)
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
     point = (
         Point(data["measurement"])

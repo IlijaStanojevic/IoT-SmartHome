@@ -19,6 +19,9 @@ def dms_callback(input, settings):
                 "value": input
             }
             dmsDaemon.dms_batch.append(dms_payload)
+            dmsDaemon.publish_data_counter += 1
+            if dmsDaemon.publish_data_counter >= dmsDaemon.publish_data_limit:
+                dmsDaemon.publish_event.set()
 def run_dms(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting dms simulator")
