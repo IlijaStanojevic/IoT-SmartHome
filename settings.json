@@ -94,13 +94,16 @@
   },
   "GLCD": {
     "simulated": true,
-    "pin": 17,
+    "pin_rs": 0,
+    "pin_e": 2,
+    "pins_db": [4, 5, 6, 7],
     "runs_on": "PI2",
     "name": "GLCD"
   },
   "GSG": {
     "simulated": true,
-    "pin": 17,
+    "SCL": 3,
+    "SDA": 2,
     "runs_on": "PI2",
     "name": "GSG"
   },
@@ -136,7 +139,8 @@
   },
   "B4SD": {
     "simulated": true,
-    "pin": 17,
+    "segments": [11,4,23,8,7,10,18,25],
+    "digits": [22,27,17,24],
     "runs_on": "PI3",
     "name": "B4SD"
   },
@@ -148,7 +152,9 @@
   },
   "BRGB": {
     "simulated": true,
-    "pin": 17,
+    "RED_PIN": 12,
+    "GREEN_PIN": 13,
+    "BLUE_PIN": 19,
     "runs_on": "PI3",
     "name": "BRGB"
   }
