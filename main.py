@@ -3,8 +3,8 @@ import threading
 from components.db import run_db
 from components.dl import run_dl
 from components.dms import run_dms
-from components.ds1 import run_ds
-from components.dus1 import run_uds
+from components.ds1 import run_ds1
+from components.dus1 import run_dus1
 from components.dpir1 import run_dpir1
 from components.rdht2 import run_rdht2
 from components.rpir1 import run_rpir1
@@ -74,8 +74,8 @@ if __name__ == "__main__":
         run_dpir1(dpir1_settings, threads, stop_event)
         run_rpir1(rpir1_settings, threads, stop_event)
         run_rpir2(rpir2_settings, threads, stop_event)
-        run_uds(dus1_settings, threads, stop_event)
-        run_ds(ds1_settings, threads, stop_event)
+        run_dus1(dus1_settings, threads, stop_event)
+        run_ds1(ds1_settings, threads, stop_event)
         run_dms(dms_settings, threads, stop_event)
 
         user_input_thread = threading.Thread(target=user_input_handler, args=(threads, stop_event))

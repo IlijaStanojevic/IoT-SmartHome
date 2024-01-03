@@ -66,5 +66,90 @@
     "pin_C4": 21,
     "runs_on": "PI1",
     "name": "DMS"
+  },
+  "DS2": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI2",
+    "name": "DS2"
+  },
+  "DUS2": {
+    "simulated": true,
+    "TRIG_PIN": 23,
+    "ECHO_PIN": 24,
+    "runs_on": "PI2",
+    "name": "DUS2"
+  },
+  "DPIR2": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI2",
+    "name": "DPIR2"
+  },
+  "GDHT": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI2",
+    "name": "GDHT"
+  },
+  "GLCD": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI2",
+    "name": "GLCD"
+  },
+  "GSG": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI2",
+    "name": "GSG"
+  },
+  "RPIR3": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI2",
+    "name": "RPIR3"
+  },
+  "RDHT3": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI2",
+    "name": "RDHT3"
+  },
+  "RPIR4": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI3",
+    "name": "RPIR4"
+  },
+  "RDHT4": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI3",
+    "name": "RDHT4"
+  },
+  "BB": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI3",
+    "name": "BB"
+  },
+  "B4SD": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI3",
+    "name": "B4SD"
+  },
+  "BIR": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI3",
+    "name": "BIR"
+  },
+  "BRGB": {
+    "simulated": true,
+    "pin": 17,
+    "runs_on": "PI3",
+    "name": "BRGB"
   }
 }

@@ -25,7 +25,7 @@ def ds_callback(locked, settings):
         if dsDaemon.publish_data_counter >= dsDaemon.publish_data_limit:
             dsDaemon.publish_event.set()
 
-def run_ds(settings, threads, stop_event):
+def run_ds1(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting ds1 simulator")
         ds1_thread = threading.Thread(target=run_ds_simulator, args=(2, ds_callback, stop_event, settings))
@@ -39,4 +39,4 @@ def run_ds(settings, threads, stop_event):
         ds1_thread = threading.Thread(target=run_ds_loop, args=(dht, 2, ds_callback, stop_event, settings))
         ds1_thread.start()
         threads.append(ds1_thread)
-        print("RDht1 loop started")
+        print("ds1 loop started")
