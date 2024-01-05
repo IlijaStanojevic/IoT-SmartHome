@@ -4,8 +4,8 @@ import random
 
 def generate_values():
     while True:
-        motion = random.choice([0, 1])
-        if motion == 1:
+        motion = random.random()
+        if motion > 0.9:
             yield True
         else:
             yield False

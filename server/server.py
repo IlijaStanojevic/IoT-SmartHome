@@ -32,6 +32,10 @@ mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg
 
 def save_to_db(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
+    print(data)
+    if (data["measurement"] == "Motion") and (data["value"] is True) and data["name"] == "DPIR1":
+        mqtt_client.publish("PI1/commands", "TurnOnDL")
+        print("TurnOnDL")
     point = (
         Point(data["measurement"])
         .tag("simulated", data["simulated"])
@@ -74,7 +78,10 @@ def retrieve_simple_data():
     |> range(start: -10m)"""
     return handle_influx_query(query)
 
-
+@app.route('/command', methods=['GET'])
+def command():
+    mqtt_client.publish("PI1/commands", "TurnOnDL")
+    return jsonify({"status": "success"})
 @app.route('/aggregate_query', methods=['GET'])
 def retrieve_aggregate_data():
     query = f"""from(bucket: "{bucket}")
