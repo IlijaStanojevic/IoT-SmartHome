@@ -1,5 +1,7 @@
 import threading
 import paho.mqtt.client as mqtt
+
+from components.brgb import run_brgb
 from components.db import run_db
 from components.dl import run_dl
 from components.dms import run_dms
@@ -23,17 +25,29 @@ try:
 except:
     pass
 def on_message(client, userdata, msg):
-    if (msg.payload.decode("utf-8") == "TurnOnDL"):
+    message = msg.payload.decode("utf-8")
+    if message == "TurnOnDL":
         dl_settings = settings["DL"]
         run_dl(dl_settings, threads, stop_door_light)
         time.sleep(10)
         stop_door_light.set()
-    elif (msg.payload.decode("utf-8") == "TurnOnBlinking"):
+    elif message == "TurnOnBlinking":
         blinking_event.set()
         print("Blinking on")
-    elif (msg.payload.decode("utf-8") == "TurnOffBlinking"):
+    elif message == "TurnOffBlinking":
         blinking_event.clear()
         print("Blinking off")
+    elif message[:3] == "RGB":
+        color = message[4:]
+        print("RGB color: " + color)
+        if color == "OFF":
+            brgb_event.set()
+        else:
+            brgb_event.set()
+            time.sleep(2)
+            brgb_event.clear()
+            run_brgb(brgb_settings, threads, brgb_event, color)
+
 
 
 
@@ -100,6 +114,7 @@ if __name__ == "__main__":
     stop_buzzer = threading.Event()
     stop_door_light = threading.Event()
     blinking_event = threading.Event()
+    brgb_event = threading.Event()
     try:
         if current_py == 1:
             rdht1_settings = settings['RDHT1']
@@ -132,7 +147,7 @@ if __name__ == "__main__":
             brgb_settings = settings["BRGB"]
             # run_rpir4(rpir4_settings, threads, stop_event)
             # run_rdht4(rdht4_settings, threads, stop_event)
-            run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
+            # run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
         while True:
             client.loop()
             time.sleep(1)

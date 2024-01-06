@@ -79,18 +79,23 @@ def retrieve_simple_data():
     return handle_influx_query(query)
 
 @app.route('/turnOnDL', methods=['POST'])
-def turnOnDl():
+def turn_on_dl():
     mqtt_client.publish("PI1/commands", "TurnOnDL")
     return jsonify({"status": "success", "message:": "Door light turned on"})
 
 @app.route('/turnOnBlinking', methods=['POST'])
-def turnOnBlinking():
+def turn_on_blinking():
     mqtt_client.publish("PI3/commands", "TurnOnBlinking")
     return jsonify({"status": "success", "message": "Blinking turned on"})
 @app.route('/turnOffBlinking', methods=['POST'])
-def turnOffBlinking():
+def turn_off_blinking():
     mqtt_client.publish("PI3/commands", "TurnOffBlinking")
     return jsonify({"status": "success", "message": "Blinking turned off"})
+
+@app.route('/rgbcolor/<color>', methods=['POST'])
+def rgb_color(color):
+    mqtt_client.publish("PI3/commands", f"RGB_{color}")
+    return jsonify({"message": f"RGB color set to {color}"})
 
 @app.route('/aggregate_query', methods=['GET'])
 def retrieve_aggregate_data():

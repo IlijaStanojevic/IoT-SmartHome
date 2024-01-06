@@ -5,9 +5,11 @@ import time
 
 def b4sd_callback(time_b4sd, blinking, settings):
     with output_lock:
+        print("=" * 20)
         print("Current time on b4sd: " + time_b4sd)
         print("Blinking: " + str(blinking))
         print("Device: " + settings["name"] + " on " + settings["runs_on"])
+        print("=" * 20)
 
 def run_b4sd(settings, threads, stop_event, blinking_event):
     if settings['simulated']:
