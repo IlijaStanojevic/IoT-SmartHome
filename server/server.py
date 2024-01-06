@@ -78,10 +78,20 @@ def retrieve_simple_data():
     |> range(start: -10m)"""
     return handle_influx_query(query)
 
-@app.route('/command', methods=['GET'])
-def command():
+@app.route('/turnOnDL', methods=['POST'])
+def turnOnDl():
     mqtt_client.publish("PI1/commands", "TurnOnDL")
-    return jsonify({"status": "success"})
+    return jsonify({"status": "success", "message:": "Door light turned on"})
+
+@app.route('/turnOnBlinking', methods=['POST'])
+def turnOnBlinking():
+    mqtt_client.publish("PI1/commands", "TurnOnBlinking")
+    return jsonify({"status": "success", "message": "Blinking turned on"})
+@app.route('/turnOffBlinking', methods=['POST'])
+def turnOffBlinking():
+    mqtt_client.publish("PI1/commands", "TurnOffBlinking")
+    return jsonify({"status": "success", "message": "Blinking turned off"})
+
 @app.route('/aggregate_query', methods=['GET'])
 def retrieve_aggregate_data():
     query = f"""from(bucket: "{bucket}")
