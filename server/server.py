@@ -85,11 +85,11 @@ def turnOnDl():
 
 @app.route('/turnOnBlinking', methods=['POST'])
 def turnOnBlinking():
-    mqtt_client.publish("PI1/commands", "TurnOnBlinking")
+    mqtt_client.publish("PI3/commands", "TurnOnBlinking")
     return jsonify({"status": "success", "message": "Blinking turned on"})
 @app.route('/turnOffBlinking', methods=['POST'])
 def turnOffBlinking():
-    mqtt_client.publish("PI1/commands", "TurnOffBlinking")
+    mqtt_client.publish("PI3/commands", "TurnOffBlinking")
     return jsonify({"status": "success", "message": "Blinking turned off"})
 
 @app.route('/aggregate_query', methods=['GET'])

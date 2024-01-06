@@ -30,8 +30,10 @@ def on_message(client, userdata, msg):
         stop_door_light.set()
     elif (msg.payload.decode("utf-8") == "TurnOnBlinking"):
         blinking_event.set()
+        print("Blinking on")
     elif (msg.payload.decode("utf-8") == "TurnOffBlinking"):
         blinking_event.clear()
+        print("Blinking off")
 
 
 
@@ -128,8 +130,8 @@ if __name__ == "__main__":
             b4sd_settings = settings["B4SD"]
             bir_settings = settings["BIR"]
             brgb_settings = settings["BRGB"]
-            run_rpir4(rpir4_settings, threads, stop_event)
-            run_rdht4(rdht4_settings, threads, stop_event)
+            # run_rpir4(rpir4_settings, threads, stop_event)
+            # run_rdht4(rdht4_settings, threads, stop_event)
             run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
         while True:
             client.loop()
