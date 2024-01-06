@@ -27,6 +27,7 @@ except:
 def on_message(client, userdata, msg):
     message = msg.payload.decode("utf-8")
     if message == "TurnOnDL":
+        stop_door_light.clear()
         dl_settings = settings["DL"]
         run_dl(dl_settings, threads, stop_door_light)
         time.sleep(10)
