@@ -14,10 +14,10 @@ def brgb_callback(current_color, settings):
         print("=" * 20)
 
 
-def run_brgb(settings, threads, stop_event, color):
+def run_brgb(settings, threads, brgb_event):
     if settings['simulated']:
         print("Starting brgb sumilator")
-        brgb_thread = threading.Thread(target=run_brgb_simulator, args=(2, brgb_callback, stop_event, settings, color))
+        brgb_thread = threading.Thread(target=run_brgb_simulator, args=(2, brgb_callback, brgb_event, settings))
         brgb_thread.start()
         threads.append(brgb_thread)
         print("brgb simulator started")
@@ -25,7 +25,7 @@ def run_brgb(settings, threads, stop_event, color):
         from actuators.brgb import run_brgb_loop, BRGB
         print("Starting brgb loop")
         brgb = BRGB(settings)
-        brgb_thread = threading.Thread(target=run_brgb_loop, args=(brgb, 2, brgb_callback, stop_event, settings, color))
+        brgb_thread = threading.Thread(target=run_brgb_loop, args=(brgb, 2, brgb_callback, brgb_event, settings))
         brgb_thread.start()
         threads.append(brgb_thread)
         print("brgb loop started")

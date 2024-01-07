@@ -24,6 +24,11 @@ try:
     GPIO.setmode(GPIO.BCM)
 except:
     pass
+
+class ColorEvent(threading.Event):
+    def __init__(self):
+        super().__init__()
+        self.color = None
 def on_message(client, userdata, msg):
     message = msg.payload.decode("utf-8")
     if message == "TurnOnDL":
@@ -41,13 +46,12 @@ def on_message(client, userdata, msg):
     elif message[:3] == "RGB":
         color = message[4:]
         print("RGB color: " + color)
-        if color == "OFF":
-            brgb_event.set()
-        else:
-            brgb_event.set()
-            time.sleep(2)
-            brgb_event.clear()
-            run_brgb(brgb_settings, threads, brgb_event, color)
+        # if color == "OFF":
+        #     brgb_event.set()  # mozda treba samo clear i color = "OFF"
+        # else:
+        brgb_event.clear()
+        brgb_event.color = color
+
 
 
 
@@ -115,7 +119,8 @@ if __name__ == "__main__":
     stop_buzzer = threading.Event()
     stop_door_light = threading.Event()
     blinking_event = threading.Event()
-    brgb_event = threading.Event()
+    brgb_event = ColorEvent()
+    brgb_event.color = "OFF"
     try:
         if current_py == 1:
             rdht1_settings = settings['RDHT1']
@@ -149,6 +154,7 @@ if __name__ == "__main__":
             # run_rpir4(rpir4_settings, threads, stop_event)
             # run_rdht4(rdht4_settings, threads, stop_event)
             # run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
+            run_brgb(brgb_settings, threads, brgb_event)
         while True:
             client.loop()
             time.sleep(1)

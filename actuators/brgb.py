@@ -1,3 +1,5 @@
+import time
+
 import RPi.GPIO as GPIO
 from time import sleep
 class BRGB(object):
@@ -80,10 +82,13 @@ class BRGB(object):
                 self.current_color = "OFF"
                 self.turnOff()
 
-def run_brgb_loop(brgb, delay, callback, stop_event, settings, color):
+def run_brgb_loop(brgb, delay, callback, brgb_event, settings):
     while True:
-        brgb.current_color = color
+        brgb.current_color = brgb_event.color
+        time.sleep(0.1)
+        brgb_event.clear()
+        brgb_event.color = brgb.current_color
         brgb.run_loop()
         callback(brgb.current_color, settings)
-        if stop_event.is_set():
+        if brgb_event.is_set():
             break
