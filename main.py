@@ -2,6 +2,7 @@ import threading
 import paho.mqtt.client as mqtt
 
 from components.bb import run_bb
+from components.bir import run_bir
 from components.brgb import run_brgb
 from components.db import run_db
 from components.dl import run_dl
@@ -198,8 +199,9 @@ if __name__ == "__main__":
             brgb_settings = settings["BRGB"]
             # run_rpir4(rpir4_settings, threads, stop_event)
             # run_rdht4(rdht4_settings, threads, stop_event)
-            run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
-            # run_brgb(brgb_settings, threads, brgb_event)
+            # run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
+            run_bir(bir_settings, threads, stop_event)
+            run_brgb(brgb_settings, threads, brgb_event)
         while True:
             client.loop()
             time.sleep(1)
