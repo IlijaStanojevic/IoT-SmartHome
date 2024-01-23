@@ -17,6 +17,7 @@ function App() {
         >
           Learn React
         </a>
+        <iframe src="http://localhost:3000/d-solo/e4808398-51ac-4e6a-965b-cc7a99ad42f1/iot-smarthome?orgId=1&panelId=3" width="450" height="200" frameBorder="0"></iframe>
       </header>
     </div>
   );
