@@ -1,6 +1,6 @@
 import json
 import threading
-from ds1 import ds_callback
+from components.ds1 import ds_callback
 from daemons import dsDaemon
 from simulators.ds import run_ds_simulator
 from OutputLock import output_lock

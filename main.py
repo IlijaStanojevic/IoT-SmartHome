@@ -5,13 +5,20 @@ from components.brgb import run_brgb
 from components.db import run_db
 from components.dl import run_dl
 from components.dms import run_dms
+from components.dpir2 import run_dpir2
 from components.ds1 import run_ds1
+from components.ds2 import run_ds2
 from components.dus1 import run_dus1
 from components.dpir1 import run_dpir1
+from components.dus2 import run_dus2
+from components.gdht import run_gdht
+from components.glcd import run_glcd
 from components.rdht2 import run_rdht2
+from components.rdht3 import run_rdht3
 from components.rdht4 import run_rdht4
 from components.rpir1 import run_rpir1
 from components.rpir2 import run_rpir2
+from components.rpir3 import run_rpir3
 from components.rpir4 import run_rpir4
 from components.b4sd import run_b4sd
 from settings import load_settings
@@ -29,6 +36,14 @@ class ColorEvent(threading.Event):
     def __init__(self):
         super().__init__()
         self.color = None
+
+class LCDEvent(threading.Event):
+    def __init__(self):
+        super().__init__()
+        self.temperature = None
+        self.humidity = None
+
+
 def on_message(client, userdata, msg):
     message = msg.payload.decode("utf-8")
     if message == "TurnOnDL":
@@ -43,6 +58,12 @@ def on_message(client, userdata, msg):
     elif message == "TurnOffBlinking":
         blinking_event.clear()
         print("Blinking off")
+    elif message[:6] == "GLCD-T":
+        temperature = eval(message.split(":")[1])
+        lcd_event.temperature = temperature
+    elif message[:6] == "GLCD-H":
+        humidity = eval(message.split(":")[1])
+        lcd_event.humidity = humidity
     elif message[:3] == "RGB":
         color = message[4:]
         print("RGB color: " + color)
@@ -121,6 +142,9 @@ if __name__ == "__main__":
     blinking_event = threading.Event()
     brgb_event = ColorEvent()
     brgb_event.color = "OFF"
+    lcd_event = LCDEvent()
+    lcd_event.temperature = 0
+    lcd_event.humidity = 0
     try:
         if current_py == 1:
             rdht1_settings = settings['RDHT1']
@@ -143,7 +167,23 @@ if __name__ == "__main__":
             # user_input_thread = threading.Thread(target=user_input_handler, args=(threads, stop_event))
             # user_input_thread.start()
         elif current_py == 2:
-            pass
+            ds2_settings = settings["DS2"]
+            dus2_settings = settings["DUS2"]
+            dpir2_settings = settings["DPIR2"]
+            gdht_settings = settings["GDHT"]
+            glcd_settings = settings["GLCD"]
+            gsg_settings = settings["GSG"]
+            rpir3_settings = settings["RPIR3"]
+            rdht3_settings = settings["RDHT3"]
+
+            # run_ds2(ds2_settings, threads, stop_event)
+            # run_dus2(dus2_settings, threads, stop_event)
+            # run_dpir2(dpir2_settings, threads, stop_event)
+            run_gdht(gdht_settings, threads, stop_event)
+            run_glcd(glcd_settings, threads, stop_event, lcd_event)
+            # run_gsg(gsg_settings, threads, stop_event)
+            # run_rpir3(rpir3_settings, threads, stop_event)
+            # run_rdht3(rdht3_settings, threads, stop_event)
         elif current_py == 3:
             rpir4_settings = settings["RPIR4"]
             rdht4_settings = settings['RDHT4']

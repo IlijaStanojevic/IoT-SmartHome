@@ -14,10 +14,10 @@ def glcd_callback(temperature, humidity, settings):
         print("=" * 20)
 
 
-def run_glcd(settings, threads, stop_event):
+def run_glcd(settings, threads, stop_event, lcd_event):
     if settings['simulated']:
         print("Starting glcd simulator")
-        glcd_thread = threading.Thread(target=run_glcd_simulator, args=(2, glcd_callback, stop_event, settings))
+        glcd_thread = threading.Thread(target=run_glcd_simulator, args=(2, glcd_callback, stop_event, settings, lcd_event))
         glcd_thread.start()
         threads.append(glcd_thread)
         print("glcd simulator started")
@@ -25,7 +25,7 @@ def run_glcd(settings, threads, stop_event):
         from actuators.lcd.glcd import run_glcd_loop, GLCD
         print("Starting glcd loop")
         glcd = GLCD(settings)
-        glcd_thread = threading.Thread(target=run_glcd_loop, args=(glcd, 2, glcd_callback, stop_event, settings))
+        glcd_thread = threading.Thread(target=run_glcd_loop, args=(glcd, 2, glcd_callback, stop_event, settings, lcd_event))
         glcd_thread.start()
         threads.append(glcd_thread)
         print("glcd loop started")

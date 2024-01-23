@@ -36,6 +36,10 @@ def save_to_db(data):
     if (data["measurement"] == "Motion") and (data["value"] is True) and data["name"] == "DPIR1":
         mqtt_client.publish("PI1/commands", "TurnOnDL")
         print("TurnOnDL")
+    if (data["measurement"] == "Temperature") and data["name"] == "GDHT":
+        mqtt_client.publish("PI2/commands", "GLCD-T:" + str(data["value"]))
+    if (data["measurement"] == "Humidity") and data["name"] == "GDHT":
+        mqtt_client.publish("PI2/commands", "GLCD-H:" + str(data["value"]))
     point = (
         Point(data["measurement"])
         .tag("simulated", data["simulated"])

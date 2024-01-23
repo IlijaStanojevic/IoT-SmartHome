@@ -1,7 +1,7 @@
 import json
 import threading
 import time
-from dus1 import dus_callback
+from components.dus1 import dus_callback
 from daemons import udsDaemon
 from simulators.uds import run_uds_simulator
 from OutputLock import output_lock
