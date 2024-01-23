@@ -4,7 +4,8 @@ import random
 
 def generate_values():
     while True:
-        bir = random.choice(["LEFT", "RIGHT", "UP", "DOWN", "RED", "GREEN", "WHITE", "OK", "BLUE", "YELLOW", "PURPLE", "LIGHT_BLUE", "8", "9", "*", "OFF","#"])
+        # bir = random.choice(["LEFT", "RIGHT", "UP", "DOWN", "RED", "GREEN", "WHITE", "OK", "BLUE", "YELLOW", "PURPLE", "LIGHT_BLUE", "8", "9", "*", "OFF","#"])
+        bir = random.choice(["OFF", "WHITE", "RED", "GREEN", "BLUE", "YELLOW", "PURPLE", "LIGHT_BLUE"])
         yield bir
 
 

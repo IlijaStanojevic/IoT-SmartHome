@@ -99,7 +99,6 @@ def run_bir_loop(bir, delay, callback, stop_event, settings):
                 callback(bir.ButtonsNames[button], settings)
         if stop_event.is_set():
             break
-        time.sleep(delay)
 # check = bir.readDHT11()
 #     code = parseCheckCode(check)
 #     humidity, temperature = bir.humidity, bir.temperature

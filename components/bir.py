@@ -12,7 +12,8 @@ def bir_callback(bir, settings):
         print("=" * 20)
         print("Current bir: " + str(bir))
         print("Device: " + settings["name"] + " on " + settings["runs_on"])
-        client.publish("PI3/commands", f"RGB_{bir}")
+        if bir in ["OFF", "WHITE", "RED", "GREEN", "BLUE", "YELLOW", "PURPLE", "LIGHT_BLUE"]:
+            client.publish("PI3/commands", f"RGB_{bir}")
         print("=" * 20)
 
 

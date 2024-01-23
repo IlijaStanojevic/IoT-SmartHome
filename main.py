@@ -71,6 +71,9 @@ def on_message(client, userdata, msg):
         lcd_event.humidity = humidity
     elif message[:3] == "RGB":
         color = message[4:]
+        if color not in ["OFF", "WHITE", "RED", "GREEN", "BLUE", "YELLOW", "PURPLE", "LIGHT_BLUE"]:
+            print("Invalid color")
+            return
         print("RGB color: " + color)
         # if color == "OFF":
         #     brgb_event.set()  # mozda treba samo clear i color = "OFF"
