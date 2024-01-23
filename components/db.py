@@ -8,8 +8,8 @@ def db_callback(is_buzz, settings):
     if is_buzz == 1:
         with output_lock:
             print("=" * 20)
-            print(f"Timestamp: {time.strftime('%H:%M:%S', t)}")
-            print("Door buzzing")
+            print("Buzzing")
+            print("Device: " + settings["name"] + " on " + settings["runs_on"])
             print("=" * 20)
 
 def run_db(settings, threads, stop_event):

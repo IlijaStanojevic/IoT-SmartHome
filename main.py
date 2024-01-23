@@ -1,6 +1,7 @@
 import threading
 import paho.mqtt.client as mqtt
 
+from components.bb import run_bb
 from components.brgb import run_brgb
 from components.db import run_db
 from components.dl import run_dl
@@ -54,10 +55,13 @@ def on_message(client, userdata, msg):
         stop_door_light.set()
     elif message == "TurnOnBlinking":
         blinking_event.set()
-        print("Blinking on")
+        stop_bb_event.clear()
+        run_bb(bb_settings, threads, stop_bb_event)
+        print("Alarm clock on")
     elif message == "TurnOffBlinking":
         blinking_event.clear()
-        print("Blinking off")
+        stop_bb_event.set()
+        print("Alarm clock off")
     elif message[:6] == "GLCD-T":
         temperature = eval(message.split(":")[1])
         lcd_event.temperature = temperature
@@ -145,6 +149,7 @@ if __name__ == "__main__":
     lcd_event = LCDEvent()
     lcd_event.temperature = 0
     lcd_event.humidity = 0
+    stop_bb_event = threading.Event()
     try:
         if current_py == 1:
             rdht1_settings = settings['RDHT1']
@@ -193,8 +198,8 @@ if __name__ == "__main__":
             brgb_settings = settings["BRGB"]
             # run_rpir4(rpir4_settings, threads, stop_event)
             # run_rdht4(rdht4_settings, threads, stop_event)
-            # run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
-            run_brgb(brgb_settings, threads, brgb_event)
+            run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
+            # run_brgb(brgb_settings, threads, brgb_event)
         while True:
             client.loop()
             time.sleep(1)

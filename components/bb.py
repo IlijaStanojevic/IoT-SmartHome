@@ -2,7 +2,7 @@ from OutputLock import output_lock
 from simulators.db import run_db_simulator
 import threading
 import time
-from db import db_callback
+from components.db import db_callback
 
 
 def run_bb(settings, threads, stop_event):

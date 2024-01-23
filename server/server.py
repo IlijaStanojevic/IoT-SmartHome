@@ -3,7 +3,7 @@ from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 import paho.mqtt.client as mqtt
 import json
-
+import datetime
 
 app = Flask(__name__)
 
@@ -15,6 +15,8 @@ url = "http://localhost:8086"
 bucket = "iot-smart-home"
 influxdb_client = InfluxDBClient(url=url, token=token, org=org)
 
+
+alarm_clock = None
 
 # MQTT Configuration
 mqtt_client = mqtt.Client()
@@ -32,7 +34,11 @@ mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg
 
 def save_to_db(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
-    print(data)
+    current_time = datetime.datetime.now().time()
+    if alarm_clock is not None:
+        if current_time > alarm_clock:
+            mqtt_client.publish("PI3/commands", "TurnOnBlinking")
+            print("Turn On Alarm clock")
     if (data["measurement"] == "Motion") and (data["value"] is True) and data["name"] == "DPIR1":
         mqtt_client.publish("PI1/commands", "TurnOnDL")
         print("TurnOnDL")
@@ -40,6 +46,7 @@ def save_to_db(data):
         mqtt_client.publish("PI2/commands", "GLCD-T:" + str(data["value"]))
     if (data["measurement"] == "Humidity") and data["name"] == "GDHT":
         mqtt_client.publish("PI2/commands", "GLCD-H:" + str(data["value"]))
+
     point = (
         Point(data["measurement"])
         .tag("simulated", data["simulated"])
@@ -93,6 +100,8 @@ def turn_on_blinking():
     return jsonify({"status": "success", "message": "Blinking turned on"})
 @app.route('/turnOffBlinking', methods=['POST'])
 def turn_off_blinking():
+    global alarm_clock
+    alarm_clock = None
     mqtt_client.publish("PI3/commands", "TurnOffBlinking")
     return jsonify({"status": "success", "message": "Blinking turned off"})
 
@@ -100,6 +109,21 @@ def turn_off_blinking():
 def rgb_color(color):
     mqtt_client.publish("PI3/commands", f"RGB_{color}")
     return jsonify({"message": f"RGB color set to {color}"})
+
+
+@app.route('/set_alarm', methods=['POST'])
+def set_alarmclock():
+    global alarm_clock
+    try:
+        data = request.get_json()
+        alarm_time = data.get('alarm_time')
+        if alarm_time:
+            alarm_clock = datetime.datetime.strptime(alarm_time, "%H:%M:%S").time()
+            return jsonify({"status": "success", "message": f"Alarm set at {alarm_time}"})
+        else:
+            return jsonify({"status": "error", "message": "Invalid alarm time"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
 
 @app.route('/aggregate_query', methods=['GET'])
 def retrieve_aggregate_data():
