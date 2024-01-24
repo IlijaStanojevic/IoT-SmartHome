@@ -1,8 +1,12 @@
 import logo from "../logo.svg";
 import {Stack} from "@mui/material";
+import {useEffect} from "react";
 
 
 const Graphs = () => {
+    useEffect(() => {
+        document.title = 'Graphs';
+    }, []);
     return (
         <div className="graphs">
                 <Stack

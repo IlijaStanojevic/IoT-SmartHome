@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_socketio import SocketIO
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 import paho.mqtt.client as mqtt
@@ -8,7 +9,7 @@ import datetime
 
 app = Flask(__name__)
 cors = CORS(app)
-
+socketio = SocketIO(app, cors_allowed_origins="*")
 # InfluxDB Configuration
 token = "hioQscqfx9RGYXsr7i23J6F_RkYZeC44ykEsmBEuhoyi0SmcQweL4wcpfITfK_Gfggsh97Gb_YQhfmJwd6_K9Q=="
 org = "FTN"
@@ -90,10 +91,10 @@ def retrieve_simple_data():
     |> range(start: -10m)"""
     return handle_influx_query(query)
 
-@app.route('/turnOnDL', methods=['POST'])
+@app.route('/TEST', methods=['POST'])
 def turn_on_dl():
-    mqtt_client.publish("PI1/commands", "TurnOnDL")
-    return jsonify({"status": "success", "message:": "Door light turned on"})
+    socketio.emit('message_from_server', "TEST")
+    return jsonify({"status": "success", "message:": "TEST"})
 
 @app.route('/turnOnBlinking', methods=['POST'])
 def turn_on_blinking():
@@ -135,5 +136,12 @@ def retrieve_aggregate_data():
     return handle_influx_query(query)
 
 
+@socketio.on('message_from_client')
+def handle_message(message):
+    print('Received message:', message)
+    socketio.emit('message_from_server', message)
+
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, allow_unsafe_werkzeug=True)

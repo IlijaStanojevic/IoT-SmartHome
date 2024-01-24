@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Stack } from "@mui/material";
-
+import io from 'socket.io-client';
 const Controllers = () => {
     const [time, setTime] = useState("10:00");
     const [hours, setHours] = useState("10");
     const [minutes, setMinutes] = useState("00");
     const [seconds, setSeconds] = useState("00");
+    const [message, setMessage] = useState(':D');
+    const [receivedMessage, setReceivedMessage] = useState(':D');
+    const socket = io('http://localhost:5000', {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: Infinity,
+    });
 
     const handleHourChange = (e) => {
         const newHour = e.target.value;
@@ -77,6 +85,17 @@ const Controllers = () => {
                 console.error("Error:", error);
             });
     };
+    useEffect(() => {
+        socket.on('message_from_server', (data) => {
+            console.log(data)
+            setReceivedMessage(data);
+        });
+        document.title = 'Controls';
+    }, []);
+
+    const sendMessage = () => {
+        socket.emit('message_from_client', message);
+    };
     return (
         <div className="controllers-container">
             <Stack
@@ -109,7 +128,7 @@ const Controllers = () => {
                     <div>
                         <h2>Alarm clock</h2>
                         <Stack
-                        spacing={1}>
+                            spacing={1}>
                             <label>
                                 Hours:
                                 <input
@@ -143,6 +162,7 @@ const Controllers = () => {
                             <p>Alarm clock Time: {`${hours.padStart(2,"0")}:${minutes.padStart(2,"0")}:${seconds.padStart(2,"0")}`}</p>
                             <button onClick={setTimeClick}>Set alarm</button>
                             <button onClick={cancelTimeClick}>Cancel alarm</button>
+                            <button onClick={sendMessage}>Test send MEssage</button>
                         </Stack>
 
                     </div>
