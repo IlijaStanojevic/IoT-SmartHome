@@ -1,25 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
-
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Graphs from "./components/graphs";
+import Controllers from "./components/controllers";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <iframe src="http://localhost:3000/d-solo/e4808398-51ac-4e6a-965b-cc7a99ad42f1/iot-smarthome?orgId=1&panelId=3" width="450" height="200" frameBorder="0"></iframe>
-      </header>
-    </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+
+          </Route>
+          <Route path="graphs" element={<Graphs/>}></Route>
+          <Route path="controllers" element={<Controllers/>}></Route>
+        </Routes>
+      </BrowserRouter>
   );
 }
 
