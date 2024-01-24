@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import { AppBar, Toolbar, Button } from '@mui/material';
 import Graphs from './components/graphs';
 import Controllers from './components/controllers';
+import Home from "./components/home";
 
 function App() {
     return (
@@ -10,7 +11,7 @@ function App() {
             <div>
                 <AppBar position="static">
                     <Toolbar>
-                        <Button component={Link} to="/" color="inherit">
+                        <Button component={Link} to="" color="inherit">
                             Home
                         </Button>
                         <Button component={Link} to="/controllers" color="inherit">
@@ -23,7 +24,7 @@ function App() {
                 </AppBar>
 
                 <Routes>
-                    <Route path="/" element={<div>Home</div>} />
+                    <Route path="" element={<Home/>} />
                     <Route path="/graphs" element={<Graphs />} />
                     <Route path="/controllers" element={<Controllers />} />
                 </Routes>
