@@ -1,0 +1,15 @@
+@keyframes blinkAnimation {
+    0% {
+        background-color: red;
+    }
+    50% {
+        background-color: white;
+    }
+    100% {
+        background-color: red;
+    }
+}
+
+.blink {
+    animation: blinkAnimation 1s infinite; /* Adjust the animation duration as needed */
+}

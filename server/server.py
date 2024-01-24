@@ -40,6 +40,7 @@ def save_to_db(data):
     if alarm_clock is not None:
         if current_time > alarm_clock:
             mqtt_client.publish("PI3/commands", "TurnOnBlinking")
+            socketio.emit('message_from_server', "alarmClock")
             print("Turn On Alarm clock")
     if (data["measurement"] == "Motion") and (data["value"] is True) and data["name"] == "DPIR1":
         mqtt_client.publish("PI1/commands", "TurnOnDL")
