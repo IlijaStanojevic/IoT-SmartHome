@@ -41,6 +41,7 @@ mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg
 
 
 def save_to_db(data):
+    global alarm
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
     current_time = datetime.datetime.now().time()
     if alarm_clock is not None:
