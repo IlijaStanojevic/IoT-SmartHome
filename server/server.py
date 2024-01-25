@@ -84,10 +84,11 @@ def save_to_db(data):
 
 
 def fetch_current_state():
-    query = f"""from(bucket: "{bucket}")
-    |> range(start: -10m)
-    |> group(columns: ["name"])
-    |> last()"""
+    query = f"""from(bucket: "iot-smart-home")
+        |> range(start: -10m)
+        |> group(columns: ["name", "_measurement"], mode: "by")
+        |> last()
+        |> filter(fn: (r) => r._measurement != "Alarm")"""
     return handle_influx_query(query)
 
 
@@ -119,11 +120,7 @@ def handle_influx_query(query):
 
 @app.route('/simple_query', methods=['GET'])
 def retrieve_simple_data():
-    query = f"""from(bucket: "iot-smart-home")
-    |> range(start: -10m)
-    |> group(columns: ["name", "_measurement"], mode: "by")
-    |> last()
-    |> filter(fn: (r) => r._measurement != "Alarm")"""
+
     test = fetch_current_state()
     return test
 
