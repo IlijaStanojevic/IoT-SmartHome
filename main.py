@@ -74,6 +74,16 @@ def on_message(client, userdata, msg):
     elif message[:6] == "GLCD-H":
         humidity = eval(message.split(":")[1])
         lcd_event.humidity = humidity
+    elif "TurnOnAlarm" in message:
+        with Alarm.alarm_lock:
+            Alarm.alarm = True
+            Alarm.alarm_active = True
+            Alarm.password = message[12:]
+    elif "TurnOffAlarm" == message:
+        with Alarm.alarm_lock:
+            Alarm.alarm = False
+            Alarm.alarm_active = False
+            Alarm.password = ""
     elif message[:3] == "RGB":
         color = message[4:]
         if color not in ["OFF", "WHITE", "RED", "GREEN", "BLUE", "YELLOW", "PURPLE", "LIGHT_BLUE"]:
