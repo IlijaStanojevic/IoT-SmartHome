@@ -171,6 +171,7 @@ if __name__ == "__main__":
             dpir1_settings = settings["DPIR1"]
             rpir1_settings = settings["RPIR1"]
             rpir2_settings = settings["RPIR2"]
+            db_settings = settings["DB"]
             dus1_settings = settings['DUS1']
             ds1_settings = settings["DS1"]
             dms_settings = settings["DMS"]
@@ -182,7 +183,7 @@ if __name__ == "__main__":
             run_dus1(dus1_settings, threads, stop_event)
             run_ds1(ds1_settings, threads, stop_event)
             run_dms(dms_settings, threads, stop_event)
-
+            run_db(db_settings, threads, stop_event)
             # user_input_thread = threading.Thread(target=user_input_handler, args=(threads, stop_event))
             # user_input_thread.start()
         elif current_py == 2:

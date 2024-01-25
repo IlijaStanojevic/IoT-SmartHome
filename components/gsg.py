@@ -8,7 +8,7 @@ from simulators.gsg import run_gsg_simulator
 
 
 def dht_callback(x, y, z, code, settings):
-    if x != 1.5 or y != 1.5 or z!=1.5:
+    if x != 1.5 or y != 1.5 or z != 1.5:
         with Alarm.alarm_lock:
             Alarm.alarm = True
             Alarm.alarm_active = True
