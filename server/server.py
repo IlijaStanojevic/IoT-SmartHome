@@ -9,6 +9,7 @@ import datetime
 
 import Alarm
 
+alarm = False
 app = Flask(__name__)
 cors = CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -58,6 +59,9 @@ def save_to_db(data):
         mqtt_client.publish("PI2/commands", "GLCD-T:" + str(data["value"]))
     if (data["measurement"] == "Humidity") and data["name"] == "GDHT":
         mqtt_client.publish("PI2/commands", "GLCD-H:" + str(data["value"]))
+
+    if Alarm.alarm != alarm:
+        alarm = Alarm.alarm
 
     point = (
         Point(data["measurement"])

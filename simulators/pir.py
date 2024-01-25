@@ -4,15 +4,16 @@ import random
 import Alarm
 
 
-def generate_values():
+def generate_values(settings):
     while True:
         motion = random.random()
         if motion > 0.9:
-            with Alarm.alarm_lock:
-                Alarm.dpir1_detect = True
-            if Alarm.ppl_num == 0 and Alarm.alarm_active:
+            if 'RPIR' in settings['name']:
                 with Alarm.alarm_lock:
-                    Alarm.alarm = True
+                    Alarm.dpir1_detect = True
+                if Alarm.ppl_num == 0 and Alarm.alarm_active:
+                    with Alarm.alarm_lock:
+                        Alarm.alarm = True
             yield True
         else:
             yield False
