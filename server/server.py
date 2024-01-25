@@ -67,6 +67,16 @@ def save_to_db(data):
         .field("measurement", data["value"])
     )
     write_api.write(bucket=bucket, org=org, record=point)
+    socketio.emit('message_from_server', data["name"] + ":" + data["measurement"] + ":" + str(data["value"]))
+
+
+
+def fetch_current_state():
+    query = f"""from(bucket: "{bucket}")
+    |> range(start: -10m)
+    |> group(columns: ["name"])
+    |> last()"""
+    return handle_influx_query(query)
 
 
 # Route to store dummy data
@@ -98,8 +108,12 @@ def handle_influx_query(query):
 @app.route('/simple_query', methods=['GET'])
 def retrieve_simple_data():
     query = f"""from(bucket: "{bucket}")
-    |> range(start: -10m)"""
-    return handle_influx_query(query)
+    |> range(start: -10m)
+    |> group(columns: ["name"])
+    |> last()"""
+    test = fetch_current_state()
+    return test
+
 
 
 @app.route('/TEST', methods=['POST'])
