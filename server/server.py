@@ -7,11 +7,13 @@ import paho.mqtt.client as mqtt
 import json
 import datetime
 
+import Alarm
+
 app = Flask(__name__)
 cors = CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 # InfluxDB Configuration
-token = "hioQscqfx9RGYXsr7i23J6F_RkYZeC44ykEsmBEuhoyi0SmcQweL4wcpfITfK_Gfggsh97Gb_YQhfmJwd6_K9Q=="
+token = "t2SGVL57j6_eMg1af8UzQYrDONEWWHM4rejNoX47WIj0rBA48UVe7UqIw7HI-SD6FAhbsJsrmrvWJKecmwO97A=="
 org = "FTN"
 url = "http://localhost:8086"
 bucket = "iot-smart-home"
@@ -25,11 +27,14 @@ mqtt_client = mqtt.Client()
 mqtt_client.connect("localhost", 1883, 60)
 mqtt_client.loop_start()
 
+
 def on_connect(client, userdata, flags, rc):
     with open("../settings.json", 'r') as f:
         settings = json.load(f)
         for topic in settings.keys():
             client.subscribe(topic)
+
+
 mqtt_client.on_connect = on_connect
 mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg.payload.decode('utf-8')))
 
@@ -42,6 +47,10 @@ def save_to_db(data):
             mqtt_client.publish("PI3/commands", "TurnOnBlinking")
             socketio.emit('message_from_server', "alarmClock")
             print("Turn On Alarm clock")
+    if Alarm.alarm:
+        mqtt_client.publish("PI3/commands", "TurnOnAlarm")
+        socketio.emit('message_from_server', "alarm")
+        print("Turn On Alarm")
     if (data["measurement"] == "Motion") and (data["value"] is True) and data["name"] == "DPIR1":
         mqtt_client.publish("PI1/commands", "TurnOnDL")
         print("TurnOnDL")
@@ -92,21 +101,26 @@ def retrieve_simple_data():
     |> range(start: -10m)"""
     return handle_influx_query(query)
 
+
 @app.route('/TEST', methods=['POST'])
 def turn_on_dl():
     socketio.emit('message_from_server', "TEST")
     return jsonify({"status": "success", "message:": "TEST"})
 
+
 @app.route('/turnOnBlinking', methods=['POST'])
 def turn_on_blinking():
     mqtt_client.publish("PI3/commands", "TurnOnBlinking")
     return jsonify({"status": "success", "message": "Blinking turned on"})
+
+
 @app.route('/turnOffBlinking', methods=['POST'])
 def turn_off_blinking():
     global alarm_clock
     alarm_clock = None
     mqtt_client.publish("PI3/commands", "TurnOffBlinking")
     return jsonify({"status": "success", "message": "Blinking turned off"})
+
 
 @app.route('/rgbcolor/<color>', methods=['POST'])
 def rgb_color(color):
@@ -128,6 +142,23 @@ def set_alarmclock():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
 
+
+@app.route('/alarm_deactivate', methods=['POST'])
+def alarm_deactivate():
+    try:
+        data = request.get_json()
+        if Alarm.password == data.get('password'):
+            with Alarm.alarm_lock:
+                Alarm.alarm_active = False
+                Alarm.alarm = False
+                Alarm.password = ""
+            return jsonify({"status": "success", "message": "Alarm deactivated"})
+        else:
+            return jsonify({"status": "error", "message": "Invalid alarm password"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+
+
 @app.route('/aggregate_query', methods=['GET'])
 def retrieve_aggregate_data():
     query = f"""from(bucket: "{bucket}")
@@ -141,7 +172,6 @@ def retrieve_aggregate_data():
 def handle_message(message):
     print('Received message:', message)
     socketio.emit('message_from_server', message)
-
 
 
 if __name__ == '__main__':
