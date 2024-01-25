@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import { Stack } from "@mui/material";
+import {Stack, TextField} from "@mui/material";
 import io from 'socket.io-client';
 import './controllers.css';
 const Controllers = () => {
 
-    const alarm = true
+    let alarm = false
     const [time, setTime] = useState("10:00");
     const [hours, setHours] = useState("10");
     const [minutes, setMinutes] = useState("00");
@@ -99,6 +99,17 @@ const Controllers = () => {
         });
         document.title = 'Controls';
     }, []);
+    useEffect(() => {
+        socket.on('message_from_server', (data) => {
+            console.log(data)
+            setReceivedMessage(data);
+            if (data === "turnOnAlarm"){
+                alarm = true
+                document.getElementById("AlarmWarning").classList.add("blink");
+            }
+        });
+        document.title = 'Controls';
+    }, []);
 
     const sendMessage = () => {
         socket.emit('message_from_client', message);
@@ -114,12 +125,15 @@ const Controllers = () => {
                 <h1>Controllers</h1>
                 <div className="controllers">
                     <div className="Alarm">
-                        {alarm && (
-                            <h2>Alarm</h2>
-                        )}
                         <Stack>
                             <div className="row">
-                                <h3>ALARM</h3>
+                                <h3 id={'AlarmWarning'}>ALARM</h3>
+                                {alarm && (
+                                    <h2>Alarm</h2>
+                                )}
+                                <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+                            </div>
+                            <div className={"row"}>
                                 <button onClick={() => changeRGBColorClick("OFF")}>Turn of alarm</button>
                             </div>
                         </Stack>
