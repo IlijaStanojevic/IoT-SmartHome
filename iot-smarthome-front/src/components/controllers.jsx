@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from "react";
-import { Stack } from "@mui/material";
+import {Stack, TextField} from "@mui/material";
 import io from 'socket.io-client';
 import './controllers.css';
 const Controllers = () => {
+
+    let [alarm, setAlarm] = useState(false)
+    const [password, setPassword] = useState("")
     const [time, setTime] = useState("10:00");
     const [hours, setHours] = useState("10");
     const [minutes, setMinutes] = useState("00");
@@ -15,7 +18,6 @@ const Controllers = () => {
         reconnectionDelayMax: 5000,
         reconnectionAttempts: Infinity,
     });
-
     const handleHourChange = (e) => {
         const newHour = e.target.value;
         if (newHour >= 0 && newHour < 24) {
@@ -88,6 +90,27 @@ const Controllers = () => {
                 console.error("Error:", error);
             });
     };
+
+    function turnAlarmOff() {
+        const requestBody = {
+            password: `${password}`,
+        };
+        console.log(password)
+        document.getElementById("cancelAlarmButton").classList.remove("blink");
+        fetch(`http://localhost:5000/alarm_deactivate`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },body: JSON.stringify(requestBody),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
     useEffect(() => {
         socket.on('message_from_server', (data) => {
             console.log(data)
@@ -98,10 +121,22 @@ const Controllers = () => {
         });
         document.title = 'Controls';
     }, []);
+    useEffect(() => {
+        socket.on('message_from_server', (data) => {
+            console.log(data)
+            setReceivedMessage(data);
+            if (data === "turnOnAlarm"){
+                alarm = true
+                document.getElementById("AlarmWarning").classList.add("blink");
+            }
+        });
+        document.title = 'Controls';
+    }, []);
 
     const sendMessage = () => {
         socket.emit('message_from_client', message);
     };
+
     return (
         <div className="controllers-container">
             <Stack
@@ -112,6 +147,23 @@ const Controllers = () => {
             >
                 <h1>Controllers</h1>
                 <div className="controllers">
+                    <div className="Alarm">
+                        <Stack>
+                            <div className="row">
+                                <h3 id={'AlarmWarning'}>ALARM</h3>
+                                {alarm && (
+                                    <h2>Alarm</h2>
+                                )}
+                                <TextField id="outlined-basic" label="Outlined" variant="outlined" value={password}
+                                           onChange={(e) => {
+                                               setPassword(e.target.value);
+                                           }}/>
+                            </div>
+                            <div className={"row"}>
+                                <button onClick={() => turnAlarmOff()}>Turn off alarm</button>
+                            </div>
+                        </Stack>
+                    </div>
                     <div className="rgb">
                         <h2>RGB</h2>
                         <Stack>
@@ -131,6 +183,7 @@ const Controllers = () => {
                             </div>
                         </Stack>
                     </div>
+
                     <div>
                         <h2>Alarm clock</h2>
                         <Stack
