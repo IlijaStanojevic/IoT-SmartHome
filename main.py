@@ -1,6 +1,7 @@
 import threading
 import paho.mqtt.client as mqtt
 
+import Alarm
 from components.bb import run_bb
 from components.bir import run_bir
 from components.brgb import run_brgb
@@ -28,16 +29,20 @@ from components.rdht1 import run_rdht1
 from OutputLock import output_lock
 import sys
 import time
+
 try:
     import RPi.GPIO as GPIO
+
     GPIO.setmode(GPIO.BCM)
 except:
     pass
+
 
 class ColorEvent(threading.Event):
     def __init__(self):
         super().__init__()
         self.color = None
+
 
 class LCDEvent(threading.Event):
     def __init__(self):
@@ -82,13 +87,11 @@ def on_message(client, userdata, msg):
         brgb_event.color = color
 
 
-
-
-
 def on_connect(client, userdata, flags, rc):
     global current_py
-    print("Connected with result code "+str(rc))
+    print("Connected with result code " + str(rc))
     client.subscribe(f"PI{current_py}/commands")
+
 
 # def user_input_handler(threads, stop_event):
 #     dl_settings = settings["DL"]
@@ -138,9 +141,6 @@ if __name__ == "__main__":
     client.on_connect = on_connect
     client.on_message = on_message
     client.connect("localhost", 1883, 60)
-
-
-
 
     settings = load_settings()
     threads = []
@@ -206,6 +206,10 @@ if __name__ == "__main__":
             # run_bir(bir_settings, threads, stop_event)
             run_brgb(brgb_settings, threads, brgb_event)
         while True:
+            if Alarm.alarm:
+                with output_lock:
+                    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaa")
+                    print(Alarm.password)
             client.loop()
             time.sleep(1)
 
