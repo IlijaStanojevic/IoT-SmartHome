@@ -14,7 +14,7 @@ app = Flask(__name__)
 cors = CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 # InfluxDB Configuration
-token = "t2SGVL57j6_eMg1af8UzQYrDONEWWHM4rejNoX47WIj0rBA48UVe7UqIw7HI-SD6FAhbsJsrmrvWJKecmwO97A=="
+token = "hioQscqfx9RGYXsr7i23J6F_RkYZeC44ykEsmBEuhoyi0SmcQweL4wcpfITfK_Gfggsh97Gb_YQhfmJwd6_K9Q=="
 org = "FTN"
 url = "http://localhost:8086"
 bucket = "iot-smart-home"
@@ -53,8 +53,14 @@ def save_to_db(data):
     #     socketio.emit('message_from_server', "alarm")
     #     print("Turn On Alarm")
     if (data["measurement"] == "Alarm") and (data["value"] is True):
+        socketio.emit('message_from_server', "turnOnAlarm")
+        mqtt_client.publish("PI1/commands", "TurnOnAlarm:" + Alarm.password)
+        mqtt_client.publish("PI2/commands", "TurnOnAlarm:" + Alarm.password)
         mqtt_client.publish("PI3/commands", "TurnOnAlarm:" + Alarm.password)
     if (data["measurement"] == "Alarm") and (data["value"] is True):
+        socketio.emit('message_from_server', "turnOffAlarm")
+        mqtt_client.publish("PI1/commands", "TurnOffAlarm")
+        mqtt_client.publish("PI2/commands", "TurnOffAlarm")
         mqtt_client.publish("PI3/commands", "TurnOffAlarm")
     if (data["measurement"] == "Motion") and (data["value"] is True) and data["name"] == "DPIR1":
         mqtt_client.publish("PI1/commands", "TurnOnDL")
@@ -72,7 +78,7 @@ def save_to_db(data):
         .field("measurement", data["value"])
     )
     write_api.write(bucket=bucket, org=org, record=point)
-    socketio.emit('message_from_server', data["name"] + ":" + data["measurement"] + ":" + str(data["value"]))
+    # socketio.emit('message_from_server', data["name"] + ":" + data["measurement"] + ":" + str(data["value"]))
 
 
 
@@ -171,6 +177,8 @@ def alarm_deactivate():
                 Alarm.alarm_active = False
                 Alarm.alarm = False
                 Alarm.password = ""
+            mqtt_client.publish("PI1/commands", "TurnOffAlarm")
+            mqtt_client.publish("PI2/commands", "TurnOffAlarm")
             mqtt_client.publish("PI3/commands", "TurnOffAlarm")
             return jsonify({"status": "success", "message": "Alarm deactivated"})
         else:

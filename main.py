@@ -62,7 +62,6 @@ def on_message(client, userdata, msg):
     elif message == "TurnOnBlinking":
         blinking_event.set()
         stop_bb_event.clear()
-        run_bb(bb_settings, threads, stop_bb_event)
         print("Alarm clock on")
     elif message == "TurnOffBlinking":
         blinking_event.clear()
@@ -213,6 +212,7 @@ if __name__ == "__main__":
             run_rpir4(rpir4_settings, threads, stop_event)
             run_rdht4(rdht4_settings, threads, stop_event)
             run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
+            run_bb(bb_settings, threads, stop_bb_event)
             # run_bir(bir_settings, threads, stop_event)
             run_brgb(brgb_settings, threads, brgb_event)
         while True:
