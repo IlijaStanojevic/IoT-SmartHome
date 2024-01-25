@@ -49,10 +49,13 @@ def save_to_db(data):
             mqtt_client.publish("PI3/commands", "TurnOnBlinking")
             socketio.emit('message_from_server', "alarmClock")
             print("Turn On Alarm clock")
-    if Alarm.alarm:
+    # if Alarm.alarm:
+    #     socketio.emit('message_from_server', "alarm")
+    #     print("Turn On Alarm")
+    if (data["measurement"] == "Alarm") and (data["value"] is True):
         mqtt_client.publish("PI3/commands", "TurnOnAlarm:" + Alarm.password)
-        socketio.emit('message_from_server', "alarm")
-        print("Turn On Alarm")
+    if (data["measurement"] == "Alarm") and (data["value"] is True):
+        mqtt_client.publish("PI3/commands", "TurnOffAlarm")
     if (data["measurement"] == "Motion") and (data["value"] is True) and data["name"] == "DPIR1":
         mqtt_client.publish("PI1/commands", "TurnOnDL")
         print("TurnOnDL")
@@ -60,9 +63,6 @@ def save_to_db(data):
         mqtt_client.publish("PI2/commands", "GLCD-T:" + str(data["value"]))
     if (data["measurement"] == "Humidity") and data["name"] == "GDHT":
         mqtt_client.publish("PI2/commands", "GLCD-H:" + str(data["value"]))
-
-    if Alarm.alarm != alarm:
-        alarm = Alarm.alarm
 
     point = (
         Point(data["measurement"])
