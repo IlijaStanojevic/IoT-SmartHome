@@ -32,6 +32,7 @@ def generate_values(settings):
                         "simulated": settings['simulated'],
                         "runs_on": settings["runs_on"],
                         "name": settings["name"],
+                        "password": Alarm.password,
                         "value": Alarm.alarm
                     }
                     alarmDaemon.alarm_batch.append((settings["name"], json.dumps(alarm_payload), 0, True))
@@ -48,6 +49,7 @@ def generate_values(settings):
                         "simulated": settings['simulated'],
                         "runs_on": settings["runs_on"],
                         "name": settings["name"],
+                        "password": Alarm.password,
                         "value": Alarm.alarm
                     }
                     alarmDaemon.alarm_batch.append((settings["name"], json.dumps(alarm_payload), 0, True))
