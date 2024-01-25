@@ -10,7 +10,7 @@ from OutputLock import output_lock
 def run_ds2(settings, threads, stop_event):
     if settings['simulated']:
         print("Starting ds2 simulator")
-        ds2_thread = threading.Thread(target=run_ds_simulator, args=(2, ds_callback, stop_event, settings))
+        ds2_thread = threading.Thread(target=run_ds_simulator, args=(15, ds_callback, stop_event, settings))
         ds2_thread.start()
         threads.append(ds2_thread)
         print("ds2 simulator started")

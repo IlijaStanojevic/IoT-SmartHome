@@ -48,13 +48,9 @@ def save_to_db(data):
         if current_time > alarm_clock:
             mqtt_client.publish("PI3/commands", "TurnOnBlinking")
             socketio.emit('message_from_server', "alarmClock")
-            print("Turn On Alarm clock")
-    # if Alarm.alarm:
-    #     socketio.emit('message_from_server', "alarm")
-    #     print("Turn On Alarm")
+
     if (data["measurement"] == "Alarm") and (data["value"] is True):
-        # if alarm != data["value"]:
-            # socketio.emit('message_from_server', "TurnOnAlarm")
+        socketio.emit('message_from_server', "TurnOnAlarm")
         # socketio.emit('message_from_server', "turnOnAlarm")
         Alarm.alarm_active = True
         Alarm.alarm = True
@@ -64,8 +60,8 @@ def save_to_db(data):
         mqtt_client.publish("PI3/commands", "TurnOnAlarm:" + Alarm.password)
         alarm = True
     if (data["measurement"] == "Alarm") and (data["value"] is False):
-        # if alarm != data["value"]:
-        #     socketio.emit('message_from_server', "TurnOffAlarm")
+        if alarm != data["value"]:
+            socketio.emit('message_from_server', "TurnOffAlarm")
         Alarm.alarm_active = True
         Alarm.alarm = True
         Alarm.password = data["password"]
@@ -94,10 +90,11 @@ def save_to_db(data):
 
 
 def fetch_current_state():
-    query = f"""from(bucket: "{bucket}")
-    |> range(start: -10m)
-    |> group(columns: ["name"])
-    |> last()"""
+    query = f"""from(bucket: "iot-smart-home")
+        |> range(start: -10m)
+        |> group(columns: ["name", "_measurement"], mode: "by")
+        |> last()
+        |> filter(fn: (r) => r._measurement != "Alarm")"""
     return handle_influx_query(query)
 
 
@@ -129,11 +126,7 @@ def handle_influx_query(query):
 
 @app.route('/simple_query', methods=['GET'])
 def retrieve_simple_data():
-    query = f"""from(bucket: "iot-smart-home")
-    |> range(start: -10m)
-    |> group(columns: ["name", "_measurement"], mode: "by")
-    |> last()
-    |> filter(fn: (r) => r._measurement != "Alarm")"""
+
     test = fetch_current_state()
     return test
 
@@ -194,6 +187,7 @@ def alarm_deactivate():
             mqtt_client.publish("PI3/commands", "TurnOffAlarm")
             return jsonify({"status": "success", "message": "Alarm deactivated"})
         else:
+            socketio.emit('message_from_server', "TurnOnAlarm")
             return jsonify({"status": "error", "message": "Invalid alarm password"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
