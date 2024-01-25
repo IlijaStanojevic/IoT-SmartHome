@@ -53,15 +53,20 @@ def save_to_db(data):
     #     socketio.emit('message_from_server', "alarm")
     #     print("Turn On Alarm")
     if (data["measurement"] == "Alarm") and (data["value"] is True):
-        socketio.emit('message_from_server', "turnOnAlarm")
+        # if alarm != data["value"]:
+            # socketio.emit('message_from_server', "TurnOnAlarm")
+        # socketio.emit('message_from_server', "turnOnAlarm")
         mqtt_client.publish("PI1/commands", "TurnOnAlarm:" + Alarm.password)
         mqtt_client.publish("PI2/commands", "TurnOnAlarm:" + Alarm.password)
         mqtt_client.publish("PI3/commands", "TurnOnAlarm:" + Alarm.password)
-    if (data["measurement"] == "Alarm") and (data["value"] is True):
-        socketio.emit('message_from_server', "turnOffAlarm")
+        alarm = True
+    if (data["measurement"] == "Alarm") and (data["value"] is False):
+        # if alarm != data["value"]:
+        #     socketio.emit('message_from_server', "TurnOffAlarm")
         mqtt_client.publish("PI1/commands", "TurnOffAlarm")
         mqtt_client.publish("PI2/commands", "TurnOffAlarm")
         mqtt_client.publish("PI3/commands", "TurnOffAlarm")
+        alarm = False
     if (data["measurement"] == "Motion") and (data["value"] is True) and data["name"] == "DPIR1":
         mqtt_client.publish("PI1/commands", "TurnOnDL")
         print("TurnOnDL")
@@ -118,10 +123,11 @@ def handle_influx_query(query):
 
 @app.route('/simple_query', methods=['GET'])
 def retrieve_simple_data():
-    query = f"""from(bucket: "{bucket}")
+    query = f"""from(bucket: "iot-smart-home")
     |> range(start: -10m)
-    |> group(columns: ["name"])
-    |> last()"""
+    |> group(columns: ["name", "_measurement"], mode: "by")
+    |> last()
+    |> filter(fn: (r) => r._measurement != "Alarm")"""
     test = fetch_current_state()
     return test
 

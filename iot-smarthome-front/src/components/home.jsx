@@ -57,7 +57,7 @@ const Home = () => {
         socket.on('message_from_server', (data) => {
             console.log(data);
 
-            const [name, measurement, value] = data.split(":");
+            // const [name, measurement, value] = data.split(":");
             // updateRowValue(name, measurement, value);
         });
         document.title = 'Smart-Home';
