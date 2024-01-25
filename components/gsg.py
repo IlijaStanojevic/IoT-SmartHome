@@ -70,16 +70,16 @@ def dht_callback(x, y, z, code, settings):
 
 def run_gsg(settings, threads, stop_event):
         if settings['simulated']:
-            print("Starting rdth1 simulator")
+            print("Starting gsg simulator")
             gsg_thread = threading.Thread(target = run_gsg_simulator, args=(2, dht_callback, stop_event, settings))
             gsg_thread.start()
             threads.append(gsg_thread)
-            print("RDht1 simulator started")
+            print("Gsg simulator started")
         else:
             from sensors.gyro import loop, DHT
-            print("Starting rdht1 loop")
+            print("Starting Gsg loop")
             dht = DHT(settings['pin'])
             gsg_thread = threading.Thread(target=loop(), args=(dht, 2, dht_callback, stop_event, settings))
             gsg_thread.start()
             threads.append(gsg_thread)
-            print("RDht1 loop started")
+            print("Gsg loop started")

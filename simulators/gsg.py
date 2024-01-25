@@ -15,8 +15,8 @@ def generate_values(initial_temp=25, initial_humidity=20):
 
 
 def run_gsg_simulator(delay, callback, stop_event, settings):
-    for h, t in generate_values():
+    for x, y, z in generate_values():
         time.sleep(delay)  # Delay between readings (adjust as needed)
-        callback(h, t, "GSG_OK", settings)
+        callback(x, y, z, "GSG_OK", settings)
         if stop_event.is_set():
             break
