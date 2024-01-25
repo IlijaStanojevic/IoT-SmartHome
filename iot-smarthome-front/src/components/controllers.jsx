@@ -3,6 +3,8 @@ import { Stack } from "@mui/material";
 import io from 'socket.io-client';
 import './controllers.css';
 const Controllers = () => {
+
+    const alarm = true
     const [time, setTime] = useState("10:00");
     const [hours, setHours] = useState("10");
     const [minutes, setMinutes] = useState("00");
@@ -15,7 +17,6 @@ const Controllers = () => {
         reconnectionDelayMax: 5000,
         reconnectionAttempts: Infinity,
     });
-
     const handleHourChange = (e) => {
         const newHour = e.target.value;
         if (newHour >= 0 && newHour < 24) {
@@ -112,6 +113,17 @@ const Controllers = () => {
             >
                 <h1>Controllers</h1>
                 <div className="controllers">
+                    <div className="Alarm">
+                        {alarm && (
+                            <h2>Alarm</h2>
+                        )}
+                        <Stack>
+                            <div className="row">
+                                <h3>ALARM</h3>
+                                <button onClick={() => changeRGBColorClick("OFF")}>Turn of alarm</button>
+                            </div>
+                        </Stack>
+                    </div>
                     <div className="rgb">
                         <h2>RGB</h2>
                         <Stack>
@@ -131,6 +143,7 @@ const Controllers = () => {
                             </div>
                         </Stack>
                     </div>
+
                     <div>
                         <h2>Alarm clock</h2>
                         <Stack
