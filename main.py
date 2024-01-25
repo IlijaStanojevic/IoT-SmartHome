@@ -185,14 +185,14 @@ if __name__ == "__main__":
             rpir3_settings = settings["RPIR3"]
             rdht3_settings = settings["RDHT3"]
 
-            # run_ds2(ds2_settings, threads, stop_event)
-            # run_dus2(dus2_settings, threads, stop_event)
-            # run_dpir2(dpir2_settings, threads, stop_event)
+            run_ds2(ds2_settings, threads, stop_event)
+            run_dus2(dus2_settings, threads, stop_event)
+            run_dpir2(dpir2_settings, threads, stop_event)
             run_gdht(gdht_settings, threads, stop_event)
             run_glcd(glcd_settings, threads, stop_event, lcd_event)
             # run_gsg(gsg_settings, threads, stop_event)
-            # run_rpir3(rpir3_settings, threads, stop_event)
-            # run_rdht3(rdht3_settings, threads, stop_event)
+            run_rpir3(rpir3_settings, threads, stop_event)
+            run_rdht3(rdht3_settings, threads, stop_event)
         elif current_py == 3:
             rpir4_settings = settings["RPIR4"]
             rdht4_settings = settings['RDHT4']
@@ -200,9 +200,9 @@ if __name__ == "__main__":
             b4sd_settings = settings["B4SD"]
             bir_settings = settings["BIR"]
             brgb_settings = settings["BRGB"]
-            # run_rpir4(rpir4_settings, threads, stop_event)
-            # run_rdht4(rdht4_settings, threads, stop_event)
-            # run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
+            run_rpir4(rpir4_settings, threads, stop_event)
+            run_rdht4(rdht4_settings, threads, stop_event)
+            run_b4sd(b4sd_settings, threads, stop_event, blinking_event)
             # run_bir(bir_settings, threads, stop_event)
             run_brgb(brgb_settings, threads, brgb_event)
         while True:
