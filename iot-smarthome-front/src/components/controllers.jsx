@@ -154,7 +154,7 @@ const Controllers = () => {
                                 {alarm && (
                                     <h2>Alarm</h2>
                                 )}
-                                <TextField id="outlined-basic" label="Outlined" variant="outlined" value={password}
+                                <TextField id="outlined-basic" variant="outlined" value={password}
                                            onChange={(e) => {
                                                setPassword(e.target.value);
                                            }}/>
