@@ -1,7 +1,10 @@
+import json
 import time
 import random
 
 import Alarm
+from OutputLock import output_lock
+from daemons import alarmDaemon
 
 
 def generate_values(settings):
@@ -14,6 +17,20 @@ def generate_values(settings):
                 if Alarm.ppl_num == 0 and Alarm.alarm_active:
                     with Alarm.alarm_lock:
                         Alarm.alarm = True
+                        with output_lock:
+                            print(f"Alarm: bzzz")
+                            alarm_payload = {
+                                "measurement": "Alarm",
+                                "simulated": settings['simulated'],
+                                "runs_on": settings["runs_on"],
+                                "name": settings["name"],
+                                "value": True
+                            }
+                            alarmDaemon.alarm_batch.append((settings["name"], json.dumps(alarm_payload), 0, True))
+                            alarmDaemon.publish_data_counter += 1
+                            if alarmDaemon.publish_data_counter >= alarmDaemon.publish_data_limit:
+                                alarmDaemon.publish_event.set()
+
             yield True
         else:
             yield False
