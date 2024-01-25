@@ -16,6 +16,7 @@ from components.dpir1 import run_dpir1
 from components.dus2 import run_dus2
 from components.gdht import run_gdht
 from components.glcd import run_glcd
+from components.gsg import run_gsg
 from components.rdht2 import run_rdht2
 from components.rdht3 import run_rdht3
 from components.rdht4 import run_rdht4
@@ -199,7 +200,7 @@ if __name__ == "__main__":
             run_dpir2(dpir2_settings, threads, stop_event)
             run_gdht(gdht_settings, threads, stop_event)
             run_glcd(glcd_settings, threads, stop_event, lcd_event)
-            # run_gsg(gsg_settings, threads, stop_event)
+            run_gsg(gsg_settings, threads, stop_event)
             run_rpir3(rpir3_settings, threads, stop_event)
             run_rdht3(rdht3_settings, threads, stop_event)
         elif current_py == 3:
