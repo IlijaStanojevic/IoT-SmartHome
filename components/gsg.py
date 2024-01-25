@@ -4,7 +4,6 @@ import threading
 import Alarm
 from OutputLock import output_lock
 from daemons import gsgDaemon, alarmDaemon
-from sensors.gyro.gsg import loop
 from simulators.gsg import run_gsg_simulator
 
 
@@ -77,7 +76,7 @@ def run_gsg(settings, threads, stop_event):
             threads.append(gsg_thread)
             print("RDht1 simulator started")
         else:
-            from sensors.dht import run_dht_loop, DHT
+            from sensors.gyro import loop, DHT
             print("Starting rdht1 loop")
             dht = DHT(settings['pin'])
             gsg_thread = threading.Thread(target=loop(), args=(dht, 2, dht_callback, stop_event, settings))
