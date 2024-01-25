@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import io from "socket.io-client";
 
@@ -11,6 +11,7 @@ const Home = () => {
         reconnectionDelayMax: 5000,
         reconnectionAttempts: Infinity,
     });
+
     const groupByRunsOn = () => {
         const groupedData = {};
         receivedData.forEach((row) => {
@@ -22,6 +23,19 @@ const Home = () => {
         });
         return groupedData;
     };
+
+    const updateRowValue = (name, measurement, value) => {
+        setReceivedData((prevData) => {
+            const newData = prevData.map((row) => {
+                if (row.name === name && row._measurement === measurement) {
+                    return { ...row, _value: value };
+                }
+                return row;
+            });
+            return newData;
+        });
+    };
+
     const fetchCurrentState = () => {
         fetch(`http://localhost:5000/simple_query`, {
             method: "GET",
@@ -32,20 +46,24 @@ const Home = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setReceivedData(data.data)
+                setReceivedData(data.data);
             })
             .catch((error) => {
                 console.error("Error:", error);
             });
     };
+
     useEffect(() => {
         socket.on('message_from_server', (data) => {
-            console.log(data)
-            setReceivedMessage(data);
+            console.log(data);
+
+            const [name, measurement, value] = data.split(":");
+            // updateRowValue(name, measurement, value);
         });
         document.title = 'Smart-Home';
         fetchCurrentState();
     }, []);
+
     return (
         <div>
             {Object.entries(groupByRunsOn()).map(([runsOn, rows], index) => (
@@ -72,7 +90,6 @@ const Home = () => {
                 </div>
             ))}
         </div>
-
     );
 };
 
