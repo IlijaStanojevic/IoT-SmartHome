@@ -50,7 +50,7 @@ def save_to_db(data):
             socketio.emit('message_from_server', "alarmClock")
             print("Turn On Alarm clock")
     if Alarm.alarm:
-        mqtt_client.publish("PI3/commands", "TurnOnAlarm")
+        mqtt_client.publish("PI3/commands", "TurnOnAlarm:" + Alarm.password)
         socketio.emit('message_from_server', "alarm")
         print("Turn On Alarm")
     if (data["measurement"] == "Motion") and (data["value"] is True) and data["name"] == "DPIR1":
@@ -171,6 +171,7 @@ def alarm_deactivate():
                 Alarm.alarm_active = False
                 Alarm.alarm = False
                 Alarm.password = ""
+            mqtt_client.publish("PI3/commands", "TurnOffAlarm")
             return jsonify({"status": "success", "message": "Alarm deactivated"})
         else:
             return jsonify({"status": "error", "message": "Invalid alarm password"})
