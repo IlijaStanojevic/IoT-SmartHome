@@ -152,7 +152,7 @@ const Controllers = () => {
                             <div className="row">
                                 <h3 id={'AlarmWarning'}>ALARM</h3>
                                 {alarm && (
-                                    <h2>Alarm</h2>
+                                    <h2 className={"blink"}>Alarm</h2>
                                 )}
                                 <TextField id="outlined-basic" variant="outlined" value={password}
                                            onChange={(e) => {
