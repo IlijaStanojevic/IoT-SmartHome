@@ -4,7 +4,8 @@ import io from 'socket.io-client';
 import './controllers.css';
 const Controllers = () => {
 
-    let alarm = false
+    let [alarm, setAlarm] = useState(false)
+    const [password, setPassword] = useState("")
     const [time, setTime] = useState("10:00");
     const [hours, setHours] = useState("10");
     const [minutes, setMinutes] = useState("00");
@@ -89,6 +90,27 @@ const Controllers = () => {
                 console.error("Error:", error);
             });
     };
+
+    function turnAlarmOff() {
+        const requestBody = {
+            password: `${password}`,
+        };
+        console.log(password)
+        document.getElementById("cancelAlarmButton").classList.remove("blink");
+        fetch(`http://localhost:5000/alarm_deactivate`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },body: JSON.stringify(requestBody),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
     useEffect(() => {
         socket.on('message_from_server', (data) => {
             console.log(data)
@@ -114,6 +136,7 @@ const Controllers = () => {
     const sendMessage = () => {
         socket.emit('message_from_client', message);
     };
+
     return (
         <div className="controllers-container">
             <Stack
@@ -131,10 +154,13 @@ const Controllers = () => {
                                 {alarm && (
                                     <h2>Alarm</h2>
                                 )}
-                                <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+                                <TextField id="outlined-basic" label="Outlined" variant="outlined" value={password}
+                                           onChange={(e) => {
+                                               setPassword(e.target.value);
+                                           }}/>
                             </div>
                             <div className={"row"}>
-                                <button onClick={() => changeRGBColorClick("OFF")}>Turn off alarm</button>
+                                <button onClick={() => turnAlarmOff()}>Turn off alarm</button>
                             </div>
                         </Stack>
                     </div>
