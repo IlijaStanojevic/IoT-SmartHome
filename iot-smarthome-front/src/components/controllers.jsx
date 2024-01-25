@@ -134,7 +134,7 @@ const Controllers = () => {
                                 <TextField id="outlined-basic" label="Outlined" variant="outlined" />
                             </div>
                             <div className={"row"}>
-                                <button onClick={() => changeRGBColorClick("OFF")}>Turn of alarm</button>
+                                <button onClick={() => changeRGBColorClick("OFF")}>Turn off alarm</button>
                             </div>
                         </Stack>
                     </div>
