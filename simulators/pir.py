@@ -20,7 +20,7 @@ def generate_values(settings):
 
 
 def run_pir_simulator(delay, callback, stop_event, settings):
-    for m in generate_values():
+    for m in generate_values(settings):
         time.sleep(delay)  # Delay between readings (adjust as needed)
         callback(m, settings)
         if stop_event.is_set():
