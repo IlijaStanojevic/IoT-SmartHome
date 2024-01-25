@@ -48,21 +48,17 @@ def save_to_db(data):
         if current_time > alarm_clock:
             mqtt_client.publish("PI3/commands", "TurnOnBlinking")
             socketio.emit('message_from_server', "alarmClock")
-            print("Turn On Alarm clock")
-    # if Alarm.alarm:
-    #     socketio.emit('message_from_server', "alarm")
-    #     print("Turn On Alarm")
+
     if (data["measurement"] == "Alarm") and (data["value"] is True):
-        # if alarm != data["value"]:
-            # socketio.emit('message_from_server', "TurnOnAlarm")
+        socketio.emit('message_from_server', "TurnOnAlarm")
         # socketio.emit('message_from_server', "turnOnAlarm")
         mqtt_client.publish("PI1/commands", "TurnOnAlarm:" + Alarm.password)
         mqtt_client.publish("PI2/commands", "TurnOnAlarm:" + Alarm.password)
         mqtt_client.publish("PI3/commands", "TurnOnAlarm:" + Alarm.password)
         alarm = True
     if (data["measurement"] == "Alarm") and (data["value"] is False):
-        # if alarm != data["value"]:
-        #     socketio.emit('message_from_server', "TurnOffAlarm")
+        if alarm != data["value"]:
+            socketio.emit('message_from_server', "TurnOffAlarm")
         mqtt_client.publish("PI1/commands", "TurnOffAlarm")
         mqtt_client.publish("PI2/commands", "TurnOffAlarm")
         mqtt_client.publish("PI3/commands", "TurnOffAlarm")
@@ -188,6 +184,7 @@ def alarm_deactivate():
             mqtt_client.publish("PI3/commands", "TurnOffAlarm")
             return jsonify({"status": "success", "message": "Alarm deactivated"})
         else:
+            socketio.emit('message_from_server', "TurnOnAlarm")
             return jsonify({"status": "error", "message": "Invalid alarm password"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})

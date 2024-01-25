@@ -95,7 +95,10 @@ const Controllers = () => {
         const requestBody = {
             password: `${password}`,
         };
-        console.log(password)
+        console.log(password);
+        alarm = false;
+        document.getElementById("AlarmWarning").classList.remove("blink");
+        console.log(alarm);
         document.getElementById("cancelAlarmButton").classList.remove("blink");
         fetch(`http://localhost:5000/alarm_deactivate`, {
             method: "POST",
@@ -125,11 +128,13 @@ const Controllers = () => {
         socket.on('message_from_server', (data) => {
             console.log(data)
             setReceivedMessage(data);
-            if (data === "turnOnAlarm"){
+            if (data === "TurnOnAlarm"){
                 alarm = true
                 document.getElementById("AlarmWarning").classList.add("blink");
+                console.log(alarm);
             }
         });
+
         document.title = 'Controls';
     }, []);
 

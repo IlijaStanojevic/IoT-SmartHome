@@ -36,6 +36,7 @@ def generate_values(settings):
                 with Alarm.alarm_lock:
                     Alarm.password += dms
             time.sleep(10)
+            Alarm.password = "1234"
             with Alarm.alarm_lock:
                 Alarm.alarm_active = True
             yield Alarm.password
