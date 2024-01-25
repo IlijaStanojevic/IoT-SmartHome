@@ -52,6 +52,9 @@ def save_to_db(data):
     if (data["measurement"] == "Alarm") and (data["value"] is True):
         socketio.emit('message_from_server', "TurnOnAlarm")
         # socketio.emit('message_from_server', "turnOnAlarm")
+        Alarm.alarm_active = True
+        Alarm.alarm = True
+        Alarm.password = data["password"]
         mqtt_client.publish("PI1/commands", "TurnOnAlarm:" + Alarm.password)
         mqtt_client.publish("PI2/commands", "TurnOnAlarm:" + Alarm.password)
         mqtt_client.publish("PI3/commands", "TurnOnAlarm:" + Alarm.password)
@@ -59,6 +62,9 @@ def save_to_db(data):
     if (data["measurement"] == "Alarm") and (data["value"] is False):
         if alarm != data["value"]:
             socketio.emit('message_from_server', "TurnOffAlarm")
+        Alarm.alarm_active = True
+        Alarm.alarm = True
+        Alarm.password = data["password"]
         mqtt_client.publish("PI1/commands", "TurnOffAlarm")
         mqtt_client.publish("PI2/commands", "TurnOffAlarm")
         mqtt_client.publish("PI3/commands", "TurnOffAlarm")
